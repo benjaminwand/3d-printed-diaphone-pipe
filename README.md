@@ -1,1 +1,1 @@
-# 3d printed diaphone pipe
+This is an OpenSCAD file for a 3d-printable [diaphone](https://en.wikipedia.org/wiki/Diaphone) pipe. 
