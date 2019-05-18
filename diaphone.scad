@@ -1,5 +1,5 @@
 // adjust those
-pipe_diameter = 25.1;
+pipe_diameter = 25.2;
 tube_diameter = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thickness = 1;
 
@@ -7,14 +7,14 @@ rubber_thickness = 1;
 min_wall = 1.2;
 
 // proportions
-inner_diameter = pipe_diameter * 1.25;
-stuck_width = 3 + pipe_diameter*0.15;
-
+inner_diameter = pipe_diameter * 1.25 + 5;
+stuck_width = pipe_diameter*0.15 + 4;
+fn = round(pipe_diameter * 2.5);
 
 // inner part
 difference(){
     union(){
-        rotate_extrude($fn=50) polygon
+        rotate_extrude($fn=fn) polygon
             (points=[
                 [0, 0],
                 [inner_diameter/2 + min_wall,0],
@@ -25,10 +25,10 @@ difference(){
             rotate ([0, 90, 0])
                 cylinder 
                     (inner_diameter/2 + min_wall + stuck_width, 
-                    tube_diameter/2 + min_wall, tube_diameter/2 + min_wall);
+                    tube_diameter/2 + min_wall, tube_diameter/2 + min_wall, $fn=fn/2);
     };
      union(){
-        rotate_extrude($fn=50) polygon
+        rotate_extrude($fn=fn) polygon
             (points=[
                 [0, -1],
                 [inner_diameter/2, -1],
@@ -40,17 +40,17 @@ difference(){
             rotate ([0, 90, 0])
                 cylinder 
                     (inner_diameter/2 + min_wall + stuck_width, 
-                    tube_diameter/2, tube_diameter/2);
+                    tube_diameter/2, tube_diameter/2, $fn=fn/2);
          translate ([0, 0, stuck_width + min_wall*2 + tube_diameter/2 + rubber_thickness])
             rotate ([0, 90, 0])
                 cylinder 
                     (inner_diameter/2 + min_wall + stuck_width, 
-                    tube_diameter*0.4, tube_diameter*0.4);
+                    tube_diameter*0.4, tube_diameter*0.4, $fn=fn/2);
     };   
 }
 
 // outer part
-rotate_extrude($fn=50) polygon
+rotate_extrude($fn=fn) polygon
     (points=[
         [inner_diameter/2, -rubber_thickness - min_wall],
         [inner_diameter/2 + min_wall*2 + rubber_thickness, -rubber_thickness - min_wall],
