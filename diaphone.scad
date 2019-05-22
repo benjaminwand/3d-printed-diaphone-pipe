@@ -1,10 +1,10 @@
 // adjust those
-pipe_diameter = 25.2;
+pipe_diameter = 25;
 tube_diameter = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thickness = 1;
 
 // probably don't change those
-min_wall = 1.2;
+min_wall = 1.2 + pipe_diameter * 0.005;
 
 // proportions
 inner_diameter = pipe_diameter * 1.25 + 5;
@@ -32,7 +32,7 @@ difference(){
             (points=[
                 [0, -1],
                 [inner_diameter/2, -1],
-                [inner_diameter/2, stuck_width + min_wall*3 + tube_diameter],
+                [inner_diameter/2, min_wall*3 + tube_diameter],
                 [pipe_diameter/2, stuck_width + min_wall*3 + tube_diameter],
                 [pipe_diameter/2, stuck_width*2 + min_wall*4 + tube_diameter +1],
                 [0, stuck_width + min_wall*10 + tube_diameter +1]]);
@@ -50,6 +50,7 @@ difference(){
 }
 
 // outer part
+translate([0, inner_diameter + 5*min_wall, min_wall + rubber_thickness])
 rotate_extrude($fn=fn) polygon
     (points=[
         [inner_diameter/2, -rubber_thickness - min_wall],
