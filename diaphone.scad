@@ -12,6 +12,7 @@ stuck_width = pipe_diameter*0.15 + 4;
 fn = round(pipe_diameter * 2.5);
 
 // inner part
+rotate([0, 0, 45])
 difference(){
     union(){
         rotate_extrude($fn=fn) polygon
