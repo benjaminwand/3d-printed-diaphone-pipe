@@ -1,3 +1,5 @@
+include <M3.scad>
+
 // adjust those
 pipe_diameter = 25;
 pipe_wall_thickness = 2;
@@ -27,19 +29,8 @@ p12 = [pipe_diameter/2 - pipe_wall_thickness + min_wall, stuck_width + 2 * tube_
 p13 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, stuck_width + tube_diameter/2];
 p14 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, vibration_help];
 
-difference(){
-    hull(){
-        for (i = [-30, 90, 210])
-            rotate([0, 0, i])
-                translate([0, p4[0] + 2 * min_wall, p4[1] - stuck_width/2])
-                    cylinder(stuck_width/2, 3, 3, false, $fn=fn/3);
-    };
-    cylinder(3 * stuck_width + 2 * tube_diameter, pipe_diameter/2 + 0.1, pipe_diameter/2, false, $fn=fn);
-};
-
 // inner part
-//translate([0, 0, 2 * stuck_width + 2 * tube_diameter])
-//rotate([180, 0, 0])
+translate([0, 0, 2 * stuck_width + 2 * tube_diameter]) rotate([180, 0, 0])
 difference(){
     union(){
         rotate_extrude($fn=fn) polygon          // basic shape
@@ -57,7 +48,20 @@ difference(){
                     [0, stuck_width + 2 * tube_diameter],
                     [0, 0]
                     ]);
-        }            
+        }    
+        difference(){
+            hull(){
+                for (i = [-30, 90, 210])
+                    rotate([0, 0, i])
+                        translate([0, p4[0] + 2 * min_wall, p4[1] - stuck_width])
+                            cylinder(stuck_width, 5, 5, false, $fn=fn/3);
+            };
+            cylinder
+                (3 * stuck_width + 2 * tube_diameter, 
+                pipe_diameter/2 + 0.1, pipe_diameter/2, false, $fn=fn);
+            for (i = [-30, 90, 210]) rotate([0, 0, i])
+                translate([0, p4[0] + 2 * min_wall, p4[1] - stuck_width/2]) M3_spacer();
+        };        
     }
     difference(){
         union(){                                // cut-outs air supply cylinder
@@ -80,31 +84,34 @@ difference(){
     }
 }
 
-/*
+
 // outer part
-translate([- min_wall, pipe_diameter + 3 * min_wall, 0])
+translate([- pipe_diameter/2, pipe_diameter + min_wall, 0])
 union(){
-    difference(){
-        cylinder(stuck_width, pipe_diameter/2 + min_wall, pipe_diameter/2 + min_wall, false, $fn=fn);
-        translate([0, 0, -0.5])
-            cylinder(stuck_width +1, pipe_diameter/2, pipe_diameter/2, false, $fn=fn);
+    difference(){                   // outer circle
+        union(){
+            cylinder(stuck_width + min_wall, pipe_diameter/2 + min_wall, pipe_diameter/2 + min_wall, false, $fn=fn);
+            hull(){
+                for (i = [30, 150, 270])
+                    rotate([0, 0, i])
+                        translate([0, p4[0] + 2 * min_wall, 0])
+                            cylinder(stuck_width/2, 3, 3, false, $fn=fn/2);
+            }
+        };
+        union(){
+            translate([0, 0, min_wall])
+                cylinder(stuck_width +1, pipe_diameter/2, pipe_diameter/2, false, $fn=fn);
+            translate([0, 0, -0.5])
+                cylinder(stuck_width +1 + min_wall, pipe_diameter/2 - rubber_thickness/2, pipe_diameter/2 - rubber_thickness/2, false, $fn=fn);
+            for (i = [30, 150, 270]) rotate([0, 0, i])
+                translate([0, p4[0] + 2 * min_wall, 0]) 
+                    cylinder(  10, 1.6, 1.6, true, $fn = 15);
+        };
     };
-    difference(){
+    difference(){                   // inner circle
         cylinder(stuck_width, pipe_diameter/2 - rubber_thickness, pipe_diameter/2 - rubber_thickness, false, $fn=fn);
         translate([0, 0, -0.5])
             cylinder(stuck_width +1, pipe_diameter/2 - rubber_thickness -min_wall, pipe_diameter/2 - rubber_thickness - min_wall, false, $fn=fn);
     }
-    hull(){
-        for (i = [30, 150, 270])
-            rotate([0, 0, i])
-                translate([0, p4[0] + 2 * min_wall, 0])
-                    cylinder(stuck_width/2, 3, 3, false, $fn=fn/2);
-    }
+
 }
-*/
-/*
-todo
-* Henkel für Schrauben
-* Schrauben-Aussparungen
-* unteres klemm teil noch rand dran
-*/
