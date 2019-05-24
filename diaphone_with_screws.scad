@@ -1,7 +1,5 @@
-include <M3.scad>
-
 // adjust those
-pipe_diameter = 25;
+pipe_diameter = 60;
 pipe_wall_thickness = 2;
 tube_diameter = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thickness = 1;
@@ -50,7 +48,7 @@ difference(){
                     ]);
         }    
         difference(){
-            hull(){
+            hull(){                             // screw holders
                 for (i = [-30, 90, 210])
                     rotate([0, 0, i])
                         translate([0, p4[0] + 2 * min_wall, p4[1] - stuck_width])
@@ -59,7 +57,7 @@ difference(){
             cylinder
                 (3 * stuck_width + 2 * tube_diameter, 
                 pipe_diameter/2 + 0.1, pipe_diameter/2, false, $fn=fn);
-            for (i = [-30, 90, 210]) rotate([0, 0, i])
+            for (i = [-30, 90, 210]) rotate([0, 0, i])          // screw holes
                 translate([0, p4[0] + 2 * min_wall, p4[1] - stuck_width/2]) M3_spacer();
         };        
     }
@@ -96,16 +94,17 @@ union(){
                     rotate([0, 0, i])
                         translate([0, p4[0] + 2 * min_wall, 0])
                             cylinder(stuck_width/2, 3, 3, false, $fn=fn/2);
+                translate([0, 0, pipe_diameter * 0.75]) sphere(1);
             }
         };
         union(){
             translate([0, 0, min_wall])
-                cylinder(stuck_width +1, pipe_diameter/2, pipe_diameter/2, false, $fn=fn);
+                cylinder(pipe_diameter, pipe_diameter/2, pipe_diameter/2, false, $fn=fn);
             translate([0, 0, -0.5])
-                cylinder(stuck_width +1 + min_wall, pipe_diameter/2 - rubber_thickness/2, pipe_diameter/2 - rubber_thickness/2, false, $fn=fn);
+                cylinder(pipe_diameter, pipe_diameter/2 - rubber_thickness/2, pipe_diameter/2 - rubber_thickness/2, false, $fn=fn);
             for (i = [30, 150, 270]) rotate([0, 0, i])
                 translate([0, p4[0] + 2 * min_wall, 0]) 
-                    cylinder(  10, 1.6, 1.6, true, $fn = 15);
+                    cylinder(2 * stuck_width, 1.6, 1.6, true, $fn = 15);
         };
     };
     difference(){                   // inner circle
@@ -113,5 +112,12 @@ union(){
         translate([0, 0, -0.5])
             cylinder(stuck_width +1, pipe_diameter/2 - rubber_thickness -min_wall, pipe_diameter/2 - rubber_thickness - min_wall, false, $fn=fn);
     }
+}
 
+
+module M3_spacer() {
+    union(){
+        cylinder(stuck_width, 3, 3.2, false, $fn = 6);
+        translate([0, 0, -4.9])cylinder(2 * stuck_width, 1.6, 1.6, true, $fn = 15);
+    };
 }
