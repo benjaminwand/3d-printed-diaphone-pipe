@@ -1,5 +1,5 @@
 // adjust those
-pipe_diameter = 200;
+pipe_diameter = 60;
 pipe_wall_thickness = 2;
 tube_diameter = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thickness = 1;
@@ -11,19 +11,36 @@ stuck_width = pipe_diameter * 0.15 + 4;
 vibration_help = pipe_diameter * 0.01;
 fn = round(pipe_diameter *2);
 
+edge_slit_distance = 3;
+inside_space_edge = 
+    (pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inner_diameter/2) 
+    > edge_slit_distance 
+    ? inner_diameter/2 + min_wall
+    : pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - edge_slit_distance;
+if (inside_space_edge < 5) echo("this pipe is too thin");
+inside_slit_distance = 1.5;
+
 // points, calculated for easier maintainability
 p1 = [pipe_diameter/2 - rubber_thickness - 1.5 * min_wall, vibration_help];
-p2 = [pipe_diameter/2 - rubber_thickness - 1.5 * min_wall, stuck_width + tube_diameter/2]; //
+p2 = [pipe_diameter/2 - rubber_thickness - 1.5 * min_wall, stuck_width + tube_diameter/2];
 p3 = [pipe_diameter/2 + min_wall, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
 p4 = [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * min_wall + 1.5 * tube_diameter];
 p5 = [pipe_diameter/2, 2 * stuck_width + 2 * min_wall + 1.5 * tube_diameter];
 p6 = [pipe_diameter/2, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
 p7 = [pipe_diameter/2 - pipe_wall_thickness, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
-p8 = [inner_diameter/2, stuck_width + tube_diameter/2];
-p9 = [inner_diameter/2, 0];
-p10 = [inner_diameter/2 + min_wall, 0];
-p11 = [inner_diameter/2 + min_wall, stuck_width + tube_diameter/2];
+p9 = [inside_space_edge - min_wall, 0];
+p8 = 
+    (pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inner_diameter/2) 
+    > inside_slit_distance
+    ? [(p7[0] + p9[0])/2, (p7[1] + p9[1])/2]
+    : [pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inside_slit_distance, stuck_width + tube_diameter/2];
+p10 = [inside_space_edge, 0];
 p12 = [pipe_diameter/2 - pipe_wall_thickness + min_wall, stuck_width + min_wall + 1.5 * tube_diameter];
+p11 = 
+    (pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inner_diameter/2) 
+    > inside_slit_distance
+    ? [(p10[0] + p12[0])/2, (p10[1] + p12[1])/2]
+    : [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - inside_slit_distance, stuck_width + tube_diameter/2];
 p13 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, stuck_width + tube_diameter/2];
 p14 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, vibration_help];
 
@@ -121,8 +138,3 @@ module M3_spacer() {
         translate([0, 0, -4.9])cylinder(2 * stuck_width, 1.6, 1.6, true, $fn = 15);
     };
 }
-
-/*
-Todo: 
-p11 + p13 update, anpassen ausgehend von Abstand zum Rand, mindestens 3 mm 
-*/
