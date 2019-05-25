@@ -12,27 +12,26 @@ vibration_help = pipe_diameter * 0.01;
 fn = round(pipe_diameter * 2);
 
 // inner part
-translate([0, 0, 2 * stuck_width + 2 * tube_diameter])
-rotate([180, 0, 45])
+translate([0, 0, 2 * stuck_width + 2 * min_wall + tube_diameter]) rotate([180, 0, 45])
 difference(){
     union(){
         rotate_extrude($fn=fn) polygon          // basic shape
             (points=[
                 [pipe_diameter/2 - rubber_thickness, vibration_help],
                 [pipe_diameter/2 - rubber_thickness, stuck_width],
-                [pipe_diameter/2 + min_wall, stuck_width + 2 * tube_diameter],
-                [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * tube_diameter],
-                [pipe_diameter/2, 2 * stuck_width + 2 * tube_diameter],
-                [pipe_diameter/2, stuck_width + 2 * tube_diameter],
-                [inner_pipe_diameter/2, stuck_width + 2 * tube_diameter],
+                [pipe_diameter/2 + min_wall, stuck_width + 2 * min_wall + tube_diameter],
+                [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * min_wall + tube_diameter],
+                [pipe_diameter/2, 2 * stuck_width + 2 * min_wall + tube_diameter],
+                [pipe_diameter/2, stuck_width + 2 * min_wall + tube_diameter],
+                [inner_pipe_diameter/2, stuck_width + 2 * min_wall + tube_diameter],
                 [inner_diameter/2, 0],
                 [inner_diameter/2 + min_wall, 0],
-                [pipe_diameter/4 + inner_pipe_diameter/4 + min_wall/2, stuck_width + 2 * tube_diameter -min_wall],
+                [pipe_diameter/4 + inner_pipe_diameter/4 + min_wall/2, stuck_width + min_wall + tube_diameter],
                 [pipe_diameter/2 - rubber_thickness - min_wall, stuck_width],
                 [pipe_diameter/2 - rubber_thickness - min_wall, vibration_help]
                 ]);
         difference(){                           // air supply cylinder
-            translate ([0, 0, stuck_width + tube_diameter])
+            translate ([0, 0, stuck_width + tube_diameter/2 + min_wall])
                 rotate ([0, 90, 0])
                     cylinder 
                         (pipe_diameter/2 + min_wall + stuck_width, 
@@ -40,7 +39,7 @@ difference(){
             rotate_extrude($fn=fn) polygon
                 (points=[
                     [pipe_diameter/2 - rubber_thickness, stuck_width],
-                    [pipe_diameter/2 + min_wall/2, stuck_width + 2 * tube_diameter],
+                    [pipe_diameter/2 + min_wall/2, stuck_width + 2 * min_wall + tube_diameter],
                     [0, stuck_width + 2 * tube_diameter],
                     [0, 0]
                     ]);
@@ -48,12 +47,12 @@ difference(){
     }
     difference(){
         union(){                                // cut-outs air supply cylinder
-            translate ([pipe_diameter/2 + min_wall/2, 0, stuck_width + tube_diameter])
+            translate ([pipe_diameter/2 + min_wall/2, 0, stuck_width + tube_diameter/2 + min_wall])
                 rotate ([0, 90, 0])
                     cylinder 
                         (inner_diameter/2 + min_wall + stuck_width, 
                         tube_diameter/2, tube_diameter/2, $fn=fn/2);
-             translate ([0, 0, stuck_width + tube_diameter])
+             translate ([0, 0, stuck_width + tube_diameter/2 + min_wall])
                 rotate ([0, 90, 0])
                     cylinder 
                         (pipe_diameter, tube_diameter*0.4, tube_diameter*0.4, $fn=fn/2);
@@ -61,8 +60,8 @@ difference(){
         rotate_extrude($fn=fn) polygon
             (points=[
                 [inner_diameter/2 + min_wall, 0],
-                [pipe_diameter/2 + min_wall, stuck_width + 2 * tube_diameter],
-                [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * tube_diameter],
+                [pipe_diameter/2 + min_wall, stuck_width + 2 * min_wall + tube_diameter],
+                [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * min_wall + tube_diameter],
                 [0, 2 * stuck_width + 2 * tube_diameter],
                 [0, 0]
                 ]);
