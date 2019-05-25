@@ -1,5 +1,5 @@
 // adjust those
-pipe_diameter = 60;
+pipe_diameter = 200;
 pipe_wall_thickness = 2;
 tube_diameter = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thickness = 1;
@@ -13,22 +13,22 @@ fn = round(pipe_diameter *2);
 
 // points, calculated for easier maintainability
 p1 = [pipe_diameter/2 - rubber_thickness - 1.5 * min_wall, vibration_help];
-p2 = [pipe_diameter/2 - rubber_thickness - 1.5 * min_wall, stuck_width + tube_diameter/2];
-p3 = [pipe_diameter/2 + min_wall, stuck_width + 2 * tube_diameter];
-p4 = [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * tube_diameter];
-p5 = [pipe_diameter/2, 2 * stuck_width + 2 * tube_diameter];
-p6 = [pipe_diameter/2, stuck_width + 2 * tube_diameter];
-p7 = [pipe_diameter/2 - pipe_wall_thickness, stuck_width + 2 * tube_diameter];
+p2 = [pipe_diameter/2 - rubber_thickness - 1.5 * min_wall, stuck_width + tube_diameter/2]; //
+p3 = [pipe_diameter/2 + min_wall, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
+p4 = [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * min_wall + 1.5 * tube_diameter];
+p5 = [pipe_diameter/2, 2 * stuck_width + 2 * min_wall + 1.5 * tube_diameter];
+p6 = [pipe_diameter/2, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
+p7 = [pipe_diameter/2 - pipe_wall_thickness, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
 p8 = [inner_diameter/2, stuck_width + tube_diameter/2];
 p9 = [inner_diameter/2, 0];
 p10 = [inner_diameter/2 + min_wall, 0];
 p11 = [inner_diameter/2 + min_wall, stuck_width + tube_diameter/2];
-p12 = [pipe_diameter/2 - pipe_wall_thickness + min_wall, stuck_width + 2 * tube_diameter -min_wall];
+p12 = [pipe_diameter/2 - pipe_wall_thickness + min_wall, stuck_width + min_wall + 1.5 * tube_diameter];
 p13 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, stuck_width + tube_diameter/2];
 p14 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, vibration_help];
 
 // inner part
-translate([0, 0, 2 * stuck_width + 2 * tube_diameter]) rotate([180, 0, 0])
+translate([0, 0, 2 * stuck_width + 2 * min_wall + 1.5 * tube_diameter]) rotate([180, 0, 0])
 difference(){
     union(){
         rotate_extrude($fn=fn) polygon          // basic shape
@@ -94,7 +94,7 @@ union(){
                     rotate([0, 0, i])
                         translate([0, p4[0] + 2 * min_wall, 0])
                             cylinder(stuck_width/2, 3, 3, false, $fn=fn/2);
-                translate([0, 0, pipe_diameter * 0.75]) sphere(1);
+                translate([0, 0, pipe_diameter * 0.7]) sphere(1);
             }
         };
         union(){
@@ -121,3 +121,8 @@ module M3_spacer() {
         translate([0, 0, -4.9])cylinder(2 * stuck_width, 1.6, 1.6, true, $fn = 15);
     };
 }
+
+/*
+Todo: 
+p11 + p13 update, anpassen ausgehend von Abstand zum Rand, mindestens 3 mm 
+*/
