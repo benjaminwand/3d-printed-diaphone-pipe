@@ -134,7 +134,7 @@ union(){
 
 module M3_spacer() {
     union(){
-        cylinder(stuck_width, 3, 3.2, false, $fn = 6);
+        cylinder(stuck_width, 3.1, 3.3, false, $fn = 6);
         translate([0, 0, -4.9])cylinder(2 * stuck_width, 1.6, 1.6, true, $fn = 15);
     };
 }
