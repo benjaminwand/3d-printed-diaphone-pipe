@@ -68,14 +68,14 @@ difference(){
             hull(){                             // screw holders
                 for (i = [-30, 90, 210])
                     rotate([0, 0, i])
-                        translate([0, p4[0] + 2 * min_wall, p4[1] - stuck_width])
-                            cylinder(stuck_width, 5, 5, false, $fn=fn/3);
+                        translate([0, p4[0] + 2.5 * min_wall, p4[1] - stuck_width])
+                            cylinder(stuck_width, 5.5, 5.5, false, $fn=fn/3);
             };
             cylinder
                 (3 * stuck_width + 2 * tube_diameter, 
                 pipe_diameter/2 + 0.1, pipe_diameter/2, false, $fn=fn);
             for (i = [-30, 90, 210]) rotate([0, 0, i])          // screw holes
-                translate([0, p4[0] + 2 * min_wall, p4[1] - stuck_width/2]) M3_spacer();
+                translate([0, p4[0] + 2.5 * min_wall, p4[1] - stuck_width/2]) M4_spacer();
         };        
     }
     difference(){
@@ -109,8 +109,8 @@ union(){
             hull(){
                 for (i = [30, 150, 270])
                     rotate([0, 0, i])
-                        translate([0, p4[0] + 2 * min_wall, 0])
-                            cylinder(stuck_width/2, 3, 3, false, $fn=fn/2);
+                        translate([0, p4[0] + 2.5 * min_wall, 0])
+                            cylinder(stuck_width/2, 3.5, 3.5, false, $fn=fn/2);
                 translate([0, 0, pipe_diameter * 0.7]) sphere(1);
             }
         };
@@ -120,8 +120,8 @@ union(){
             translate([0, 0, -0.5])
                 cylinder(pipe_diameter, pipe_diameter/2 - rubber_thickness/2, pipe_diameter/2 - rubber_thickness/2, false, $fn=fn);
             for (i = [30, 150, 270]) rotate([0, 0, i])
-                translate([0, p4[0] + 2 * min_wall, 0]) 
-                    cylinder(2 * stuck_width, 1.6, 1.6, true, $fn = 15);
+                translate([0, p4[0] + 2.5 * min_wall, 0]) 
+                    cylinder(2 * stuck_width, 2.1, 2.1, true, $fn = 15);
         };
     };
     difference(){                   // inner circle
@@ -132,9 +132,9 @@ union(){
 }
 
 
-module M3_spacer() {
+module M4_spacer() {
     union(){
-        cylinder(stuck_width, 3.1, 3.3, false, $fn = 6);
-        translate([0, 0, -4.9])cylinder(2 * stuck_width, 1.6, 1.6, true, $fn = 15);
+        cylinder( stuck_width, 4.1, 4.2, false, $fn = 6);
+        translate([0, 0, -4.9])cylinder( stuck_width * 2, 2.1, 2.1, true, $fn = 15);
     };
 }
