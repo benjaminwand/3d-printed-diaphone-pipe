@@ -8,7 +8,7 @@ rubber_thickness = 1;
 min_wall = 1.2 + pipe_diameter * 0.005;
 inner_diameter = pipe_diameter * 0.7;
 stuck_width = pipe_diameter * 0.15 + 4;
-vibration_help = pipe_diameter * 0.02;
+vibration_help = pipe_diameter * 0.01;
 fn = round(pipe_diameter *2);
 
 edge_slit_distance = 4;
