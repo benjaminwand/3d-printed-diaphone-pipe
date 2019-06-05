@@ -6,12 +6,12 @@ rubber_thickness = 1;
 
 // proportions
 min_wall = 1.2 + pipe_diameter * 0.005;
-inner_diameter = pipe_diameter * 0.5;
+inner_diameter = pipe_diameter * 0.7;
 stuck_width = pipe_diameter * 0.15 + 4;
-vibration_help = pipe_diameter * 0.01;
+vibration_help = pipe_diameter * 0.02;
 fn = round(pipe_diameter *2);
 
-edge_slit_distance = 3;
+edge_slit_distance = 4;
 inside_space_edge = 
     (pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inner_diameter/2) 
     > edge_slit_distance 
@@ -28,19 +28,11 @@ p4 = [pipe_diameter/2 + min_wall, 2 * stuck_width + 2 * min_wall + 1.5 * tube_di
 p5 = [pipe_diameter/2, 2 * stuck_width + 2 * min_wall + 1.5 * tube_diameter];
 p6 = [pipe_diameter/2, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
 p7 = [pipe_diameter/2 - pipe_wall_thickness, stuck_width + 2 * min_wall + 1.5 * tube_diameter];
+p8 = [p2[0] - 2 * min_wall - inside_slit_distance, p2[1]];
 p9 = [inside_space_edge - min_wall, 0];
-p8 = 
-    (pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inner_diameter/2) 
-    > inside_slit_distance
-    ? [(p7[0] + p9[0])/2, (p7[1] + p9[1])/2]
-    : [pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inside_slit_distance, stuck_width + tube_diameter/2];
 p10 = [inside_space_edge, 0];
+p11 = [p2[0] - min_wall - inside_slit_distance, p2[1]]; 
 p12 = [pipe_diameter/2 - pipe_wall_thickness + min_wall, stuck_width + min_wall + 1.5 * tube_diameter];
-p11 = 
-    (pipe_diameter/2 - rubber_thickness - 3.5 * min_wall - inner_diameter/2) 
-    > inside_slit_distance
-    ? [(p10[0] + p12[0])/2, (p10[1] + p12[1])/2]
-    : [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - inside_slit_distance, stuck_width + tube_diameter/2];
 p13 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, stuck_width + tube_diameter/2];
 p14 = [pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, vibration_help];
 
@@ -99,7 +91,7 @@ difference(){
     }
 }
 
-
+/*
 // outer part
 translate([- pipe_diameter/2, pipe_diameter + min_wall, 0])
 union(){
@@ -130,7 +122,7 @@ union(){
             cylinder(stuck_width +1, pipe_diameter/2 - rubber_thickness -min_wall, pipe_diameter/2 - rubber_thickness - min_wall, false, $fn=fn);
     }
 }
-
+*/
 
 module M4_spacer() {
     union(){
@@ -138,3 +130,8 @@ module M4_spacer() {
         translate([0, 0, -4.9])cylinder( stuck_width * 2, 2.1, 2.1, true, $fn = 15);
     };
 }
+
+/*
+pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - inside_space_edge
+
+*/
