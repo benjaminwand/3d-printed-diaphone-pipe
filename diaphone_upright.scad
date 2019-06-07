@@ -190,9 +190,6 @@ difference(){           // inner ruber holder
     };    
 };
 
-//in_wedge();
-//out_wedge();
-
 module in_wedge() {
     //color("blue") 
     xz_extrude_poly(
@@ -222,10 +219,3 @@ module M4_spacer() {
         translate([0, 0, -4.9])cylinder( stuck_width * 2, 2.1, 2.1, true, $fn = 15);
     };
 };
-
-/*
-
-todo:
-* richtiges flue loft machen mit polyhedron
-oder unterseite von 'inner wall of generator' anpassen
-*/
