@@ -142,7 +142,8 @@ difference(){           // outer wall of generator
     };    
 };
 
-
+translate([0, pipe_diameter + 3* min_wall, -pipe_diameter/2]) rotate([0,90,0])
+union(){
 difference(){               // outer rubber holder
     union(){
         hull(){
@@ -188,6 +189,7 @@ difference(){           // inner ruber holder
         translate ([pipe_diameter/2 - stuck_width + 2* min_wall -1, 0, i]) rotate ([0, 90, 0])
             cylinder (stuck_width + 2, pipe_diameter/2- rubber_thickness -min_wall, pipe_diameter/2 - rubber_thickness -min_wall, false, $fn = fn);
     };    
+};
 };
 
 module in_wedge() {
