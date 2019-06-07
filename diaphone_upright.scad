@@ -23,8 +23,8 @@ inside_space_edge =
     : pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - edge_slit_distance;
 if (inside_space_edge < 5) echo("this pipe is too thin");
            
-
-//Pipe part
+rotate([0, -90, 0])
+union() {                                   //Pipe part
 difference(){
     union(){                                // plus
         difference(){                       // basic shape
@@ -42,7 +42,17 @@ difference(){
             translate([0, 0, -pipe_diameter/2])     // curved floor
                 sphere (pipe_diameter/2 - pipe_wall_thickness, $fn=fn);         
         };
-        intersection(){
+        intersection(){                     // octagon on back for print
+            translate([0, 0, -pipe_diameter - min_wall]) rotate([0, 0, 135])
+                cube ([ pipe_diameter, pipe_diameter, 2 * pipe_diameter + 4 * min_wall + stuck_width], false);
+            difference(){
+                rotate([0, 0, 22.5]) translate([0, 0, -pipe_diameter -min_wall])
+                    cylinder_outer(2 * pipe_diameter + 4 * min_wall + stuck_width, pipe_diameter/2 + min_wall, 8);
+                translate([0, 0, -pipe_diameter])
+                    cylinder (2 * pipe_diameter + 4 * min_wall + stuck_width, pipe_diameter/2, pipe_diameter/2 + 0.01, false, $fn = fn);
+            };
+        };
+        intersection(){                    // outer loft (but flat)
             hull(){
                 translate([-pipe_diameter/2, - pipe_diameter/2, - pipe_diameter + tube_diameter*0.5 - tube_diameter/2 - min_wall])
                         cube ([0.01, pipe_diameter, tube_diameter + 2*min_wall], false);        
@@ -85,7 +95,7 @@ difference(){
             };
         };
                                 // tube stuck thing
-        translate([-pipe_diameter/2 - min_wall, 0, - pipe_diameter + tube_diameter*0.5])
+        translate([-pipe_diameter/2 - min_wall - 0.01, 0, - pipe_diameter + tube_diameter*0.5])
             rotate ([0, 90, 0]) cylinder(stuck_width, tube_diameter * 0.5, tube_diameter * 0.5, false);
         hull(){                 // spacer for rubber holder
             for (i = [pipe_diameter/2, -pipe_diameter])
@@ -117,8 +127,6 @@ difference(){
     };
 };
 
-
-
 difference(){           // inner wall of generator
     difference(){    
         hull(){
@@ -140,6 +148,7 @@ difference(){           // inner wall of generator
     };
 };
 
+
 difference(){           // outer wall of generator
     hull(){
     for (i = [pipe_diameter/2, -pipe_diameter/2])
@@ -152,8 +161,9 @@ difference(){           // outer wall of generator
             cylinder (stuck_width * 1.5 + 2, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, pipe_diameter/2 - rubber_thickness - 2.5 * min_wall, false, $fn = fn);
     };    
 };
+};
 
-translate([0, pipe_diameter + 3* min_wall, -pipe_diameter/2]) rotate([0,90,0])
+translate([0, pipe_diameter, 0]) rotate([0,90,0])
 union(){
 difference(){               // outer rubber holder
     union(){
@@ -233,6 +243,7 @@ module M4_spacer() {
     };
 };
 
-/*
-make printable on the back mit octagon-part
-*/
+module cylinder_outer(height,radius,fn){  	//from https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects
+   fudge = 1/cos(180/fn);
+   cylinder(h=height,r=radius*fudge,$fn=fn);
+}
