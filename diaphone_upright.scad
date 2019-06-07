@@ -45,6 +45,8 @@ difference(){
         intersection(){
             hull(){
                 translate([-pipe_diameter/2, - pipe_diameter/2, - pipe_diameter + tube_diameter*0.5 - tube_diameter/2 - min_wall])
+                        cube ([0.01, pipe_diameter, tube_diameter + 2*min_wall], false);        
+                translate([-pipe_diameter/2 - min_wall + stuck_width, - pipe_diameter/2, - pipe_diameter + tube_diameter*0.5 - tube_diameter/2 - min_wall])
                     cube ([0.01, pipe_diameter, tube_diameter + 2*min_wall], false);
                 intersection(){
                     translate([pipe_diameter/2 - 1.5 * stuck_width + min_wall, - pipe_diameter/2, - pipe_diameter + tube_diameter*0.5 - tube_diameter/2 - min_wall])
@@ -75,6 +77,7 @@ difference(){
         hull(){                // inner flue
             translate([-pipe_diameter/2 - 2 * min_wall + stuck_width, 0, - pipe_diameter + tube_diameter * 0.5])
                 rotate ([0, 90, 0]) cylinder(0.1, tube_diameter * 0.4, tube_diameter * 0.4, true);
+            translate([0.01, 0, 0])
                 intersection(){
                     in_wedge();
                     translate([pipe_diameter/2 - 1.5 * stuck_width + min_wall,0, -pipe_diameter/2]) rotate([0, 90, 0])
