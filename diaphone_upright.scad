@@ -22,8 +22,7 @@ inside_space_edge =
     ? inner_diameter/2 + min_wall
     : pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - edge_slit_distance;
 if (inside_space_edge < 5) echo("this pipe is too thin");
-    
-
+           
 
 //Pipe part
 difference(){
@@ -41,23 +40,20 @@ difference(){
                     [pipe_diameter/2 - pipe_wall_thickness, -pipe_diameter/2],
                     [0, -pipe_diameter/2] ] );
             translate([0, 0, -pipe_diameter/2])     // curved floor
-                union(){
-                    sphere (pipe_diameter/2 - pipe_wall_thickness, $fn=fn);
-                    intersection(){
-                        rotate([0, 90, 0]) cylinder (pipe_diameter/2 - 1.5 * stuck_width + min_wall, pipe_diameter/2 - pipe_wall_thickness, pipe_diameter/2 - pipe_wall_thickness, false, $fn=fn);
-                        cylinder(2*pipe_diameter, pipe_diameter/2 - pipe_wall_thickness, pipe_diameter/2 - pipe_wall_thickness, true);
-                };
-            };               
+                sphere (pipe_diameter/2 - pipe_wall_thickness, $fn=fn);         
         };
-        hull(){                             // outer flue
-            translate([-pipe_diameter/2, 0, - pipe_diameter + tube_diameter*0.5]) rotate ([0, 90, 0]) 
-                cylinder(0.1, tube_diameter * 0.5 + min_wall, tube_diameter * 0.5 + min_wall, true);
-            intersection(){
-                out_wedge();
-                translate([pipe_diameter/2 - 1.5 * stuck_width + min_wall,0, -pipe_diameter/2]) rotate([0, 90, 0])
-                   cylinder(0.01, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, true);
+        intersection(){
+            hull(){
+                translate([-pipe_diameter/2, - pipe_diameter/2, - pipe_diameter + tube_diameter*0.5 - tube_diameter/2 - min_wall])
+                    cube ([0.01, pipe_diameter, tube_diameter + 2*min_wall], false);
+                intersection(){
+                    translate([pipe_diameter/2 - 1.5 * stuck_width + min_wall, - pipe_diameter/2, - pipe_diameter + tube_diameter*0.5 - tube_diameter/2 - min_wall])
+                        cube ([0.01, pipe_diameter, pipe_diameter], false);
+                    out_wedge();
+                };     
             };
-        };
+            cylinder(2 * pipe_diameter, pipe_diameter/2, pipe_diameter/2, true);
+        }; 
         difference(){
             intersection(){         // connection - pipe - generator
                 translate ([pipe_diameter/2 - stuck_width * 1.5, - pipe_diameter/2, -pipe_diameter - min_wall])
@@ -68,7 +64,7 @@ difference(){
             hull(){                 // making hole in the connector between pipe and generator
                 translate ([pipe_diameter/2 - stuck_width * 1.5 - min_wall, 0, pipe_diameter/2]) 
                     rotate ([0, 90, 0])
-                        cylinder (min_wall + 2, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, false, $fn = fn);        
+                        cylinder (min_wall + 2, pipe_diameter/2- rubber_thickness - 3 * min_wall, pipe_diameter/2- rubber_thickness - 3 * min_wall, false, $fn = fn);        
                 translate ([pipe_diameter/2 - stuck_width * 1.5 - min_wall - 0.5, 0, -pipe_diameter/2]) 
                     rotate ([0, 90, 0])
                         cylinder (min_wall + 2, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, false, $fn = fn);
@@ -133,9 +129,9 @@ difference(){           // inner wall of generator
     difference(){
         hull(){
             translate ([pipe_diameter/2 - stuck_width * 1.5 + min_wall -1, 0, pipe_diameter/2]) rotate ([0, 90, 0])
-                cylinder (stuck_width * 1.5 + 2+ vibration_help, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, inside_space_edge - min_wall, false, $fn = fn);        
+                cylinder (stuck_width * 1.5 + 2+ vibration_help, pipe_diameter/2- rubber_thickness - 3 * min_wall, inside_space_edge - min_wall, false, $fn = fn);        
             translate ([pipe_diameter/2 - stuck_width * 1.5 + min_wall -1, 0, -pipe_diameter/2]) rotate ([0, 90, 0])
-                cylinder (stuck_width * 1.5 + 2+ vibration_help, pipe_diameter/2- rubber_thickness - 2.5 * min_wall, inside_space_edge - min_wall, false, $fn = fn);
+                cylinder (stuck_width * 1.5 + 2+ vibration_help, pipe_diameter/2- rubber_thickness - 3 * min_wall, inside_space_edge - min_wall, false, $fn = fn);
         };    
     out_wedge();
     };
