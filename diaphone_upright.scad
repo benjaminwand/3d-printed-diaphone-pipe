@@ -22,22 +22,34 @@ inside_space_edge =
     ? inner_diameter/2 + min_wall
     : pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - edge_slit_distance;
 if (inside_space_edge < 5) echo("this pipe is too thin");
+    
+
 
 //Pipe part
 difference(){
-    union(){                        // plus
-        rotate_extrude($fn=fn)     // basic shape
-            polygon( points=[
-                [0, - pipe_diameter - min_wall],
-                [pipe_diameter/2 + min_wall, - pipe_diameter - min_wall],
-                [pipe_diameter/2 + min_wall, - pipe_diameter - min_wall],
-                [pipe_diameter/2 + min_wall, pipe_diameter + stuck_width + 3 * min_wall],
-                [pipe_diameter/2, pipe_diameter + stuck_width + 3 * min_wall],
-                [pipe_diameter/2, pipe_diameter + 3 * min_wall],
-                [pipe_diameter/2 - pipe_wall_thickness, pipe_diameter + 3 * min_wall],
-                [pipe_diameter/2 - pipe_wall_thickness, - pipe_diameter/2  - inside_space_edge + min_wall],
-                [0, - pipe_diameter/2  - inside_space_edge + min_wall] ] );
-        hull(){                     // outer flue
+    union(){                                // plus
+        difference(){                       // basic shape
+            rotate_extrude($fn=fn)
+                polygon( points=[
+                    [0, - pipe_diameter - min_wall],
+                    [pipe_diameter/2 + min_wall, - pipe_diameter - min_wall],
+                    [pipe_diameter/2 + min_wall, - pipe_diameter - min_wall],
+                    [pipe_diameter/2 + min_wall, pipe_diameter + stuck_width + 3 * min_wall],
+                    [pipe_diameter/2, pipe_diameter + stuck_width + 3 * min_wall],
+                    [pipe_diameter/2, pipe_diameter + 3 * min_wall],
+                    [pipe_diameter/2 - pipe_wall_thickness, pipe_diameter + 3 * min_wall],
+                    [pipe_diameter/2 - pipe_wall_thickness, -pipe_diameter/2],
+                    [0, -pipe_diameter/2] ] );
+            translate([0, 0, -pipe_diameter/2])     // curved floor
+                union(){
+                    sphere (pipe_diameter/2 - pipe_wall_thickness, $fn=fn);
+                    intersection(){
+                        rotate([0, 90, 0]) cylinder (pipe_diameter/2 - 1.5 * stuck_width + min_wall, pipe_diameter/2 - pipe_wall_thickness, pipe_diameter/2 - pipe_wall_thickness, false, $fn=fn);
+                        cylinder(2*pipe_diameter, pipe_diameter/2 - pipe_wall_thickness, pipe_diameter/2 - pipe_wall_thickness, true);
+                };
+            };               
+        };
+        hull(){                             // outer flue
             translate([-pipe_diameter/2, 0, - pipe_diameter + tube_diameter*0.5]) rotate ([0, 90, 0]) 
                 cylinder(0.1, tube_diameter * 0.5 + min_wall, tube_diameter * 0.5 + min_wall, true);
             intersection(){
@@ -221,3 +233,7 @@ module M4_spacer() {
         translate([0, 0, -4.9])cylinder( stuck_width * 2, 2.1, 2.1, true, $fn = 15);
     };
 };
+
+/*
+make printable on the back mit octagon-part
+*/
