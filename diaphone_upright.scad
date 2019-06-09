@@ -2,7 +2,7 @@ include <OpenSCAD_support/_extrudes.scad>
 
 // adjust those
 pipe_diam = 60;
-pipe_wall_thick = 2;
+pipe_wall_thick = 2.5;
 tube_diam = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thick = 1;   // generator rubber
 
@@ -27,7 +27,7 @@ if (inside_space_edge < 5) echo("this pipe is too thin");
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be" , screw_length , "mm long");
            
-rotate([0, -90, 0])
+//rotate([0, -90, 0])
 union() {                                   //Pipe part
 difference(){
     union(){                                // plus
@@ -155,13 +155,20 @@ difference(){           // inner wall of generator
 difference(){           // outer wall of generator
     hull(){
     for (i = [pipe_diam/2, -pipe_diam/2])
-        translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, 0, i]) rotate ([0, 90, 0])
-            cylinder (stuck_width * 1.5, pipe_diam/2 - rubber_thick - 1.5 * min_wall, pipe_diam/2 - rubber_thick - 1.5 * min_wall, false, $fn = fn);
+        translate ([ min_wall, 0, i]) rotate ([0, 90, 0])
+            cylinder (pipe_diam/2, pipe_diam/2 - rubber_thick - 1.5 * min_wall, pipe_diam/2 - rubber_thick - 1.5 * min_wall, false, $fn = fn);
     };
-    hull(){
-    for (i = [pipe_diam/2, -pipe_diam/2])
-        translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall -1, 0, i]) rotate ([0, 90, 0])
-            cylinder (stuck_width * 1.5 + 2, pipe_diam/2- rubber_thick - 2.5 * min_wall, pipe_diam/2 - rubber_thick - 2.5 * min_wall, false, $fn = fn);
+    union(){
+        hull(){
+        for (i = [pipe_diam/2, -pipe_diam/2])
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall -1, 0, i]) rotate ([0, 90, 0])
+                cylinder (stuck_width * 1.5 + 2, pipe_diam/2- rubber_thick - 2.5 * min_wall, pipe_diam/2 - rubber_thick - 2.5 * min_wall, false, $fn = fn);
+        };  
+        difference(){
+            cylinder(pipe_diam * 3, pipe_diam/2, pipe_diam/2, true, $fn = fn);
+            translate([pipe_diam/2 - 1.5 * stuck_width+ min_wall/2, - pipe_diam/2, - pipe_diam*2])
+               cube([pipe_diam/2, pipe_diam, pipe_diam * 4], false);
+        };        
     };    
 };
 };
@@ -258,8 +265,7 @@ todo:
 * Parameter für Höhe einführen
 * schrauben größe flexibel machen
 ** bis pipe_diam 30: M2.5
-** bis pipe_diam 40: M3
-** bis pipe_diam 80: M4
-** größer pipe_diam 80: M5
-* für sehr große pfeifen (200): generator wieder an pfeife kleben
+** bis pipe_diam 43: M3
+** bis pipe_diam 85: M4
+** größer pipe_diam 85: M5
 */
