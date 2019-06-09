@@ -14,7 +14,7 @@ vib_help = pipe_diam * 0.01;            // vibration
 screw_place = 
     [(pipe_diam/2 + min_wall+1.6)/sqrt(2), pipe_diam/2 + (pipe_diam/2 + min_wall+1.6)/sqrt(2)];
 wedge_height = 0;
-fn = round(pipe_diam + 10);
+fn = round(pipe_diam/2 + 30);
 
 edge_slit_distance = 4;
 inside_space_edge = 
@@ -25,9 +25,9 @@ inside_space_edge =
 if (inside_space_edge < 5) echo("this pipe is too thin");
     
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
-echo("your screws need to be" , screw_length , "mm long");
+echo("your screws need to be at least" , screw_length , "mm long");
            
-//rotate([0, -90, 0])
+rotate([0, -90, 0])
 union() {                                   //Pipe part
 difference(){
     union(){                                // plus
@@ -110,7 +110,7 @@ difference(){
             for (i = [screw_place[0], - screw_place[0]])
                 for (j = [screw_place[1], - screw_place[1]])
                 translate ([pipe_diam/2 - stuck_width* 1.5 + min_wall, i, j]) rotate ([0, 90, 0])
-                    cylinder (stuck_width * 1.5, 5, 5, false, $fn = fn/3);      
+                    cylinder (stuck_width * 1.5, 5, 5, false, $fn = fn/2);      
         };   
         for (i = [screw_place[0], - screw_place[0]])       // M3 screw holes
             for (j = [screw_place[1], - screw_place[1]])
@@ -260,12 +260,13 @@ module M3_spacer() {
 
 /*
 todo:
-* muttern-löcher flacher machen
 * refactorn (mehr for-i-hull)
 * Parameter für Höhe einführen
 * schrauben größe flexibel machen
 ** bis pipe_diam 30: M2.5
-** bis pipe_diam 43: M3
-** bis pipe_diam 85: M4
-** größer pipe_diam 85: M5
+** bis pipe_diam 85: M3
+** bis pipe_diam 130: M4
+** größer pipe_diam 130: M5
+* muttern-löcher flacher machen (auch parametrisch)
+* für große pfeifen (>65mm) Knick begradigen / innen Loch passend machen
 */
