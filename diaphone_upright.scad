@@ -14,7 +14,7 @@ vib_help = pipe_diam * 0.01;            // vibration
 screw_place = 
     [(pipe_diam/2 + min_wall+1.6)/sqrt(2), pipe_diam/2 + (pipe_diam/2 + min_wall+1.6)/sqrt(2)];
 wedge_height = 0;
-screw_spacer = min_wall + 2;            // change this when adapting vor different screws!!
+screw_spacer = min_wall + 2;            // change this when adapting for different screws!!
 fn = round(pipe_diam/2 + 30);
 
 edge_slit_distance = 4;
@@ -181,7 +181,6 @@ difference(){           // outer wall of generator
 
 
 translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
-union(){
 difference(){               // outer rubber holder
     union(){
         hull(){             // outer shape
@@ -218,6 +217,7 @@ difference(){               // outer rubber holder
     };
 };
 
+translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
 difference(){           // inner ruber holder
     hull(){
     for (i = [pipe_diam/2, -pipe_diam/2])
@@ -232,7 +232,7 @@ difference(){           // inner ruber holder
                 pipe_diam/2 - rubber_thick -min_wall, false, $fn = fn);
     };    
 };
-};
+
 
 module in_wedge() {
     //color("blue") 
