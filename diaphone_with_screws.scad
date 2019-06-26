@@ -91,7 +91,7 @@ difference(){
     }
 }
 
-/*
+
 // outer part
 translate([- pipe_diameter/2, pipe_diameter + min_wall, 0])
 union(){
@@ -122,7 +122,7 @@ union(){
             cylinder(stuck_width +1, pipe_diameter/2 - rubber_thickness -min_wall, pipe_diameter/2 - rubber_thickness - min_wall, false, $fn=fn);
     }
 }
-*/
+
 
 module M4_spacer() {
     union(){
@@ -130,8 +130,3 @@ module M4_spacer() {
         translate([0, 0, -4.9])cylinder( stuck_width * 2, 2.1, 2.1, true, $fn = 15);
     };
 }
-
-/*
-pipe_diameter/2 - rubber_thickness - 2.5 * min_wall - inside_space_edge
-
-*/
