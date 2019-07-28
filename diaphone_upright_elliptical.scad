@@ -82,18 +82,7 @@ difference(){
                 translate ([0,0,  -pipe_diam - min_wall])
                     cylinder (pipe_diam * 2 + min_wall, pipe_diam/2, pipe_diam/2, false);
             };   
-            hull(){                 // making hole in the connector between pipe and generator
-                translate ([- min_wall, 0, 0])intersection(){ 
-                    translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, -pipe_diam - min_wall])
-                        cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
-                    ellipse();
-                }; 
-                translate ([2 * min_wall, 0, 0])intersection(){    
-                    translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, -pipe_diam - min_wall])
-                        cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
-                    ellipse();
-                }; 
-            };         
+            ellipse();              // making a hole into it       
         };   
     };
     union(){                            // minus
@@ -175,35 +164,36 @@ difference(){           // inner wall of generator
         };    
     out_wedge();
     };
-};
-difference(){           // outer wall of generator
-    hull(){
-        for (i = [pipe_diam/2, -pipe_diam/2])
-            translate ([ min_wall, 0, i]) rotate ([0, 90, 0])
-                cylinder (pipe_diam/2, pipe_diam/2 - rubber_thick - 2.5 * min_wall, 
-                    pipe_diam/2 - rubber_thick - 2.5 * min_wall, false, $fn = fn);
-        translate ([ min_wall, 0, 0]) rotate ([0, 90, 0])
-            cylinder (pipe_diam/2, pipe_diam/2 - rubber_thick - 1.5 * min_wall, 
-            pipe_diam/2 - rubber_thick - 1.5 * min_wall, false, $fn = fn);
-    };
-    union(){
-        hull(){
-            for (i = [pipe_diam/2, -pipe_diam/2])
-                translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall -1, 0, i]) rotate ([0, 90, 0])
-                    cylinder (stuck_width * 1.5 + 2, pipe_diam/2- rubber_thick - 3.5 * min_wall, 
-                        pipe_diam/2 - rubber_thick - 3.5 * min_wall, false, $fn = fn);
-            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall -1, 0, 0]) rotate ([0, 90, 0])
-                cylinder (stuck_width * 1.5 + 2, pipe_diam/2- rubber_thick - 2.5 * min_wall, 
-                    pipe_diam/2 - rubber_thick - 2.5 * min_wall, false, $fn = fn);
-        };  
-        difference(){           // this helps to glue the generator to the pipe for larger pipes
-            cylinder(pipe_diam * 3, pipe_diam/2, pipe_diam/2, true, $fn = fn);
-                translate([pipe_diam/2 - 1.5 * stuck_width+ min_wall/2, - pipe_diam/2, - pipe_diam*2])
-                    cube([pipe_diam/2, pipe_diam, pipe_diam * 4], false); 
-        };        
-    };    
 };*/
+difference(){               // outer wall generator
+    hull(){      
+        intersection(){ 
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
+                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
+        }; 
+        translate ([stuck_width * 1.5 + min_wall, 0, 0])intersection(){    
+            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, - height/2 - min_wall])
+                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
+        }; 
+    };
+    hull(){  
+        translate ([ - 0.1, 0, 0])intersection(){ 
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
+                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            ellipse();
+        }; 
+        translate ([stuck_width * 1.5 + min_wall + 0.1, 0, 0])intersection(){    
+            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, - height/2 - min_wall])
+                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            ellipse();
+        }; 
+    };
 };
+};
+
+
 
 /*
 //translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
