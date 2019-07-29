@@ -29,7 +29,7 @@ if (inside_space_edge < 5) echo("this pipe is too thin");
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be at least" , screw_length , "mm long");
 
-rotate([0, -90, 0])
+//rotate([0, -90, 0])
 union() {                                   //Pipe part
 difference(){
     union(){                                // plus
@@ -38,23 +38,23 @@ difference(){
                 polygon( points=[
                     [0, - height/2 - min_wall],
                     [pipe_diam/2 + min_wall, - height/2 - min_wall],
-                    [pipe_diam/2 + min_wall, height/2 + stuck_width + 3*min_wall],
-                    [pipe_diam/2, height/2 + stuck_width + 3*min_wall],
-                    [pipe_diam/2, height/2 + 3*min_wall],
-                    [pipe_diam/2 - pipe_wall_thick, height/2 + 3*min_wall],
+                    [pipe_diam/2 + min_wall, height/2 + stuck_width + 4*min_wall],
+                    [pipe_diam/2, height/2 + stuck_width + 4*min_wall],
+                    [pipe_diam/2, height/2 + 4*min_wall],
+                    [pipe_diam/2 - pipe_wall_thick, height/2 + 4*min_wall],
                     [pipe_diam/2 - pipe_wall_thick - min_wall, 0],
                     [0, 0] ] );
             ellipse();                      // curved floor      
         };
         intersection(){                     // octagonal shape on back for print
             translate([0, 0, -height/2 - min_wall]) rotate([0, 0, 135])
-                cube ([ pipe_diam, pipe_diam, height + 4* min_wall + stuck_width], false);
+                cube ([ pipe_diam, pipe_diam, height + 5* min_wall + stuck_width], false);
             difference(){
                 rotate([0, 0, 22.5]) translate([0, 0, -height/2 -min_wall])
-                    cylinder_outer(height + 4* min_wall + stuck_width, 
+                    cylinder_outer(height + 5* min_wall + stuck_width, 
                         pipe_diam/2 + min_wall, 8);
                 translate([0, 0, -pipe_diam])
-                    cylinder (height + 4* min_wall + stuck_width, pipe_diam/2, 
+                    cylinder (height + 5* min_wall + stuck_width, pipe_diam/2, 
                         pipe_diam/2 + 0.01, false, $fn = fn);
             };
         };
@@ -76,9 +76,9 @@ difference(){
         difference(){
             intersection(){         // connection - pipe - generator
                 translate ([pipe_diam/4 - min_wall, - pipe_diam/2, -height/2 - min_wall])
-                    cube([pipe_diam/2, pipe_diam, height + 4* min_wall], false);
+                    cube([pipe_diam/2, pipe_diam, height + 5* min_wall], false);
                 translate ([0,0,  -pipe_diam - min_wall])
-                    cylinder (height + 4* min_wall, pipe_diam/2, pipe_diam/2, false);
+                    cylinder (height + 5* min_wall, pipe_diam/2, pipe_diam/2, false);
             };   
             ellipse();              // making a hole into it       
         };   
@@ -87,10 +87,10 @@ difference(){
         hull(){                         // inner flue
             translate([-pipe_diam/2 - 2 * min_wall + stuck_width, 0, - height/2 + tube_diam * 0.5])
                 rotate ([0, 90, 0]) cylinder(0.1, tube_diam * 0.4, tube_diam * 0.4, true);
-            translate([0.01, 0, 0])
+            translate([0.1, 0, 0])
                 intersection(){
                     in_wedge();
-                    translate ([pipe_diam/4 - min_wall, - pipe_diam/2, -height/2 - min_wall])
+                    translate ([pipe_diam/4, - pipe_diam/2, -height/2 - min_wall])
                         cube([0.01, pipe_diam, height + min_wall], false);
                     ellipse();             
             };
@@ -125,9 +125,9 @@ difference(){
 difference(){           // inner wall of generator
     difference(){    
         hull(){      
-            intersection(){ 
+           intersection(){ 
                 translate ([pipe_diam/4, - pipe_diam/2, - height/2 - min_wall])
-                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+                    cube([0.01, pipe_diam, height + min_wall], false);
                 ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
             }; 
             translate([pipe_diam/4 + 1.5 * stuck_width + vib_help, 0, 0]) 
@@ -142,7 +142,7 @@ difference(){           // inner wall of generator
             translate ([ - 0.1, 0, 0])
             intersection(){ 
                 translate ([pipe_diam/4, - pipe_diam/2, - height/2 - min_wall])
-                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+                    cube([0.01, pipe_diam, height + min_wall], false);
                 ellipse();
             }; 
             translate([pipe_diam/4 + 1.5 * stuck_width + vib_help + 0.1, 0, 0]) 
@@ -180,7 +180,7 @@ difference(){               // outer wall generator
     };
 };
 };
-
+/*
 translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
 difference(){           // inner ruber holder
     translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
@@ -220,7 +220,7 @@ difference(){               // outer rubber holder
                     cylinder( stuck_width * 2, 1.6, 1.6, true, $fn = 15);
     };
 };
-
+*/
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
 
 module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4), xtr = 0.01) 
@@ -231,7 +231,7 @@ module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4)
 module in_wedge() {
     //color("blue") 
     xz_extrude_poly(
-    [[pipe_diam * 0.5 + 3* min_wall, (-height/2 + edge_slit_distance/2) * 0.87],
+    [[pipe_diam * 0.5 + 3* min_wall, - sqrt(3/4) * height/2 + edge_slit_distance],
     [pipe_diam * 0.5 + 3* min_wall, -height/2], 
     [0, -height/2],
     [0, -height/4 - inside_space_edge + wedge_height]
@@ -241,7 +241,7 @@ module in_wedge() {
 module out_wedge() {
     //color("red") 
     xz_extrude_poly(
-    [[pipe_diam * 0.5 + 3* min_wall, (-height/2 + edge_slit_distance/2) * 0.87 + min_wall],
+    [[pipe_diam * 0.5 + 3* min_wall, - sqrt(3/4) * height/2 + edge_slit_distance + min_wall],
     [pipe_diam * 0.5 + 3* min_wall, -height/2], 
     [0, -height/2],    
     [0, -height/4 - inside_space_edge + wedge_height + min_wall]
