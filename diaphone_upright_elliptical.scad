@@ -1,7 +1,7 @@
 include <OpenSCAD_support/_extrudes.scad>
 
 // adjust those
-pipe_diam = 60;
+pipe_diam = 20;
 pipe_wall_thick = 2.5;
 tube_diam = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thick = 1;   // generator rubber
@@ -25,8 +25,6 @@ inside_space_edge =                     // used in wedge modules
     ? inner_diam/2 + min_wall
     : pipe_diam/2 - rubber_thick - 2.5 * min_wall - edge_slit_distance;
 if (inside_space_edge < 5) echo("this pipe is too thin");
-    
-echo (edge_slit_distance = edge_slit_distance);
     
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be at least" , screw_length , "mm long");
@@ -171,25 +169,25 @@ difference(){           // inner wall of generator
 difference(){               // outer wall generator
     hull(){      
         intersection(){ 
-            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
-                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
         }; 
         translate ([stuck_width * 1.5 + min_wall, 0, 0])intersection(){    
-            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
-                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
         }; 
     };
     hull(){  
         translate ([ - 0.1, 0, 0])intersection(){ 
-            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
-                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse();
         }; 
         translate ([stuck_width * 1.5 + min_wall + 0.1, 0, 0])intersection(){    
-            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
-                cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse();
         }; 
     };
@@ -243,35 +241,35 @@ difference(){               // outer rubber holder
 */
 
 
-/*
+
 //translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
 difference(){           // inner ruber holder
     hull(){      
         translate([stuck_width /2 + min_wall, 0, 0])intersection(){ 
-            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, - height/2 - min_wall])
-                cube([0.01, pipe_diam * 2, height + 2 * min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height])
+                cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
         }; 
         translate ([stuck_width * 1.5 + min_wall, 0, 0])intersection(){    
-            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, - height/2 - min_wall])
-                cube([0.01, pipe_diam * 2, height + 2 * min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height])
+                cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
         }; 
     };
     hull(){  
         translate ([stuck_width /2 + min_wall - 0.1, 0, 0])intersection(){ 
-            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, - height/2 - min_wall])
-                cube([0.01, pipe_diam * 2, height + min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height])
+                cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
         }; 
         translate ([stuck_width * 1.5 + min_wall + 0.1, 0, 0])intersection(){    
-            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, - height/2 - min_wall])
-                cube([0.01, pipe_diam * 2, height + min_wall], false);
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height])
+                cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
         }; 
     };
 };
-*/
+
 
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
 
@@ -309,6 +307,8 @@ module M3_spacer() {
 
 /*
 todo:
+* outer generator
+* bugfixes for very small or very large pipes
 * schrauben größe flexibel machen
 ** bis pipe_diam 30: M2.5
 ** bis pipe_diam 85: M3
