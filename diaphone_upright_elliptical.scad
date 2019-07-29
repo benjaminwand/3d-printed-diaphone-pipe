@@ -40,23 +40,23 @@ difference(){
                 polygon( points=[
                     [0, - height/2 - min_wall],
                     [pipe_diam/2 + min_wall, - height/2 - min_wall],
-                    [pipe_diam/2 + min_wall, height/2 + stuck_width],
-                    [pipe_diam/2, height/2 + stuck_width],
-                    [pipe_diam/2, height/2],
-                    [pipe_diam/2 - pipe_wall_thick, height/2],
+                    [pipe_diam/2 + min_wall, height/2 + stuck_width + 3*min_wall],
+                    [pipe_diam/2, height/2 + stuck_width + 3*min_wall],
+                    [pipe_diam/2, height/2 + 3*min_wall],
+                    [pipe_diam/2 - pipe_wall_thick, height/2 + 3*min_wall],
                     [pipe_diam/2 - pipe_wall_thick - min_wall, 0],
                     [0, 0] ] );
             ellipse();                      // curved floor      
         };
         intersection(){                     // octagonal shape on back for print
             translate([0, 0, -height/2 - min_wall]) rotate([0, 0, 135])
-                cube ([ pipe_diam, pipe_diam, height + min_wall + stuck_width], false);
+                cube ([ pipe_diam, pipe_diam, height + 4* min_wall + stuck_width], false);
             difference(){
                 rotate([0, 0, 22.5]) translate([0, 0, -height/2 -min_wall])
-                    cylinder_outer(height + min_wall + stuck_width, 
+                    cylinder_outer(height + 4* min_wall + stuck_width, 
                         pipe_diam/2 + min_wall, 8);
                 translate([0, 0, -pipe_diam])
-                    cylinder (height + min_wall + stuck_width, pipe_diam/2, 
+                    cylinder (height + 4* min_wall + stuck_width, pipe_diam/2, 
                         pipe_diam/2 + 0.01, false, $fn = fn);
             };
         };
@@ -80,9 +80,9 @@ difference(){
         difference(){
             intersection(){         // connection - pipe - generator
                 translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, -pipe_diam - min_wall])
-                    cube([pipe_diam/2, pipe_diam, pipe_diam * 2 + min_wall], false);
+                    cube([pipe_diam/2, pipe_diam, pipe_diam * 2 + 4* min_wall], false);
                 translate ([0,0,  -pipe_diam - min_wall])
-                    cylinder (pipe_diam * 2 + min_wall, pipe_diam/2, pipe_diam/2, false);
+                    cylinder (pipe_diam * 2 + 4* min_wall, pipe_diam/2, pipe_diam/2, false);
             };   
             ellipse();              // making a hole into it       
         };   
