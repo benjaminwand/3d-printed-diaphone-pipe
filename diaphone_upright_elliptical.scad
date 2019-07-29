@@ -289,8 +289,6 @@ module M3_spacer() {
 /*
 todo:
 
-* refactorn auf richtige Ellipsen und keine Schnitte die sich von einander ableiten
-
 * outer generator
 
 * schrauben größe flexibel machen
