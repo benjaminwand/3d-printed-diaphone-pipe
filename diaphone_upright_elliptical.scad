@@ -1,7 +1,7 @@
 include <OpenSCAD_support/_extrudes.scad>
 
 // adjust those
-pipe_diam = 40;
+pipe_diam = 60;
 pipe_wall_thick = 2.5;
 tube_diam = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thick = 1;   // generator rubber
@@ -308,7 +308,7 @@ module M3_spacer() {
 /*
 todo:
 * outer generator
-* bugfixes for very small or very large pipes
+* Platz für überstehendes Plastik machen
 * schrauben größe flexibel machen
 ** bis pipe_diam 30: M2.5
 ** bis pipe_diam 85: M3
