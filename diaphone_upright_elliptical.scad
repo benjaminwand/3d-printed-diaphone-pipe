@@ -189,7 +189,7 @@ difference(){               // outer wall generator
 };
 };
 
-/*
+
 //translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
 difference(){               // outer rubber holder
     union(){
@@ -233,41 +233,23 @@ difference(){               // outer rubber holder
                     cylinder( stuck_width * 2, 1.6, 1.6, true, $fn = 15);
     };
 };
-*/
-
-
 
 //translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
 difference(){           // inner ruber holder
-    hull(){      
-        translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
-    xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8);
-        translate ([pipe_diam/4 + stuck_width * 1.5, 0, 0])v_ellipse(
-    xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8);
-    };
-    hull(){      
-        translate([ pipe_diam/4 + stuck_width/2 - 0.1, 0, 0])v_ellipse(
-    xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6);
-        translate ([pipe_diam/4 + stuck_width * 1.5 + 0.1, 0, 0])v_ellipse(
-    xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6);
-    };    
+    translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
+        xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8, xtr = stuck_width);
+    translate([ pipe_diam/4 + stuck_width/2 - 0.1, 0, 0])v_ellipse(
+        xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6, xtr = stuck_width + 0.2);  
 };
-
 
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
 
-
-module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4)) 
+module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4), xtr = 0.01) 
     rotate ([0, 90, 0])
-        linear_extrude (0.01)   
+        linear_extrude (xtr)   
             resize (newsize=[z, xy]) circle(r=10, $fn=fn);
 
-/*color("blue") translate([pipe_diam/4, 0, 0]) v_ellipse();
-color("red") intersection(){ 
-    translate ([pipe_diam/4, - pipe_diam, - height/2]) 
-        cube([0.01, pipe_diam * 2, height], false);
-    ellipse();
-};
+/*
 color("red") translate([pipe_diam/4 + 1.5 * stuck_width, 0, 0]) v_ellipse(
     xy = sqrt(3/4) * pipe_diam + min_wall * 4, z = sqrt(3/4) * height + min_wall * 4);
 */
