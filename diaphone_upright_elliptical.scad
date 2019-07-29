@@ -98,18 +98,10 @@ difference(){
                                         // tube stuck thing
         translate([-pipe_diam/2 - min_wall - 0.01, 0, - height/2 + tube_diam*0.5])
             rotate ([0, 90, 0]) cylinder(stuck_width, tube_diam * 0.5, tube_diam * 0.5, false);        
-        hull(){                         // spacer for rubber holder
-            intersection(){ 
-                translate ([pipe_diam/4, - pipe_diam, -height/2 - 2* min_wall])
-                    cube([0.01, pipe_diam * 2, height * 2 + 4* min_wall], false);
-                ellipse(xy = pipe_diam + 8 * min_wall, z = height + 8 * min_wall);
-            }; 
-            translate ([pipe_diam/2, 0, 0])intersection(){    
-                translate ([pipe_diam/4, - pipe_diam, -height/2 - 2* min_wall])
-                    cube([0.01, pipe_diam * 2, height + 4* min_wall], false);
-                ellipse(xy = pipe_diam + 8 * min_wall, z = height + 8 * min_wall);
-            }; 
-        };  
+        translate([ pipe_diam/4, 0, 0])v_ellipse(       // spacer for rubber holder
+            xy = sqrt(3/4) * pipe_diam + min_wall * 12 + rubber_thick * 2, 
+            z = sqrt(3/4) * height + min_wall * 12 + rubber_thick * 2, 
+            xtr = pipe_diam); 
         hull(){                         // spacer for screw mechanics
             for (i = [screw_place[0], - screw_place[0]])
                 for (j = [screw_place[1], - screw_place[1]])
@@ -235,11 +227,6 @@ module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4)
     rotate ([0, 90, 0])
         linear_extrude (xtr)   
             resize (newsize=[z, xy]) circle(r=10, $fn=fn);
-
-/*
-color("red") translate([pipe_diam/4 + 1.5 * stuck_width, 0, 0]) v_ellipse(
-    xy = sqrt(3/4) * pipe_diam + min_wall * 4, z = sqrt(3/4) * height + min_wall * 4);
-*/
 
 module in_wedge() {
     //color("blue") 
