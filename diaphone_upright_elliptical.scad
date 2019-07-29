@@ -113,9 +113,8 @@ difference(){
         hull(){                         // spacer for screw mechanics
             for (i = [screw_place[0], - screw_place[0]])
                 for (j = [screw_place[1], - screw_place[1]])
-                translate ([pipe_diam/4, i, j]) rotate ([0, 90, 0])
-                    cylinder (stuck_width * 1.5, screw_spacer + 2* min_wall, 
-                        screw_spacer + 2* min_wall, false, $fn = fn/2);      
+                translate ([pipe_diam/4, i - pipe_diam/2, j - pipe_diam + screw_spacer + min_wall]) 
+                    cube ([pipe_diam, pipe_diam, pipe_diam], false);    
         };   
         for (i = [screw_place[0], - screw_place[0]])       // screw holes
             for (j = [screw_place[1], - screw_place[1]])
@@ -139,7 +138,7 @@ difference(){           // inner wall of generator
                     cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
                 ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
             }; 
-            translate ([stuck_width * 1.5 + min_wall + vib_help, 0, 0])
+            translate ([stuck_width * 1.5 + vib_help, 0, 0])
             intersection(){    
                 translate ([pipe_diam/4, - pipe_diam/2, - height/2 - min_wall])
                     cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
@@ -157,7 +156,7 @@ difference(){           // inner wall of generator
                     cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
                 ellipse();
             }; 
-            translate ([stuck_width * 1.5 + min_wall + vib_help + 0.1, 0, 0])
+            translate ([stuck_width * 1.5 + vib_help + 0.1, 0, 0])
             intersection(){    
                 translate ([pipe_diam/4, - pipe_diam/2, - height/2 - min_wall])
                     cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
@@ -175,7 +174,7 @@ difference(){               // outer wall generator
                 cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
         }; 
-        translate ([stuck_width * 1.5 + min_wall, 0, 0])intersection(){    
+        translate ([stuck_width * 1.5, 0, 0])intersection(){    
             translate ([pipe_diam/4, - pipe_diam, - height/2 - min_wall])
                 cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
@@ -187,7 +186,7 @@ difference(){               // outer wall generator
                 cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse();
         }; 
-        translate ([stuck_width * 1.5 + min_wall + 0.1, 0, 0])intersection(){    
+        translate ([stuck_width * 1.5 + 0.1, 0, 0])intersection(){    
             translate ([pipe_diam/4, - pipe_diam, - height/2 - min_wall])
                 cube([0.01, pipe_diam * 2, height + min_wall], false);
             ellipse();
@@ -247,24 +246,24 @@ difference(){               // outer rubber holder
 //translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
 difference(){           // inner ruber holder
     hull(){      
-        translate([stuck_width /2 + min_wall, 0, 0])intersection(){ 
+        translate([stuck_width/2, 0, 0])intersection(){ 
             translate ([pipe_diam/4, - pipe_diam, - height])
                 cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
         }; 
-        translate ([stuck_width * 1.5 + min_wall, 0, 0])intersection(){    
+        translate ([stuck_width * 1.5, 0, 0])intersection(){    
             translate ([pipe_diam/4, - pipe_diam, - height])
                 cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
         }; 
     };
     hull(){  
-        translate ([stuck_width /2 + min_wall - 0.1, 0, 0])intersection(){ 
+        translate ([stuck_width/2 - 0.1, 0, 0])intersection(){ 
             translate ([pipe_diam/4, - pipe_diam, - height])
                 cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
         }; 
-        translate ([stuck_width * 1.5 + min_wall + 0.1, 0, 0])intersection(){    
+        translate ([stuck_width * 1.5 + 0.1, 0, 0])intersection(){    
             translate ([pipe_diam/4, - pipe_diam, - height])
                 cube([0.01, pipe_diam * 2, height * 2], false);
             ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
@@ -326,19 +325,13 @@ todo:
 
 * refactorn auf richtige Ellipsen und keine Schnitte die sich von einender ableiten
 
-* refactorn auf cut ist bei pipe_diam/2, stuck_with geht nach aussen.
-
 * outer generator
-
-* Platz für überstehendes Plastik machen
 
 * schrauben größe flexibel machen
 ** bis pipe_diam 30: M2.5
 ** bis pipe_diam 85: M3
 ** bis pipe_diam 130: M4
 ** größer pipe_diam 130: M5
-
-* muttern-löcher flacher machen (auch parametrisch)
 
 * "spacer for rubber holder" anpassen
 */
