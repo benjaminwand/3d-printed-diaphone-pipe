@@ -28,7 +28,7 @@ if (inside_space_edge < 5) echo("this pipe is too thin");
     
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be at least" , screw_length , "mm long");
-
+/*
 //rotate([0, -90, 0])
 union() {                                   //Pipe part
 difference(){
@@ -193,7 +193,7 @@ difference(){               // outer wall generator
         }; 
     };
 };
-};
+};*/
 
 /*
 //translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
@@ -274,19 +274,19 @@ difference(){           // inner ruber holder
 
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
 
-/*
-module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4) + min_wall, z = sqrt(height*height*3/4) + 2*min_wall) 
+
+module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4)) 
     rotate ([0, 90, 0])
         linear_extrude (0.01)   
             resize (newsize=[z, xy]) circle(r=10, $fn=fn);
 
-color("blue") translate([pipe_diam/4 - min_wall, 0, 0]) v_ellipse();
+color("blue") translate([pipe_diam/4, 0, 0]) v_ellipse();
 color("red") intersection(){ 
-    translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2])
+    translate ([pipe_diam/4, - pipe_diam, - height/2]) 
         cube([0.01, pipe_diam * 2, height], false);
     ellipse();
 };
-*/
+
 
 module in_wedge() {
     //color("blue") 
@@ -323,7 +323,7 @@ module M3_spacer() {
 /*
 todo:
 
-* refactorn auf richtige Ellipsen und keine Schnitte die sich von einender ableiten
+* refactorn auf richtige Ellipsen und keine Schnitte die sich von einander ableiten
 
 * outer generator
 
