@@ -3,8 +3,8 @@ include <OpenSCAD_support/_extrudes.scad>
 // adjust those
 pipe_diam = 60;
 pipe_wall_thick = 2.5;
-tube_diam = 11;         // air suppy tube, doesn't matter if you use your mouth
-rubber_thick = 1;       // generator rubber
+tube_diam = 11;                     // air suppy tube, doesn't matter if you use your mouth
+rubber_thick = 1;                   // generator rubber
 
 // proportions
 height = sqrt(2) * pipe_diam;
@@ -41,7 +41,7 @@ difference(){
                     [pipe_diam/2, inner_height + stuck_width],
                     [pipe_diam/2, inner_height],
                     [pipe_diam/2 - pipe_wall_thick, inner_height],
-                    [pipe_diam/2 - pipe_wall_thick - min_wall, 0],
+                    [pipe_diam/2, 0],
                     [0, 0] ] );
             ellipse();                  // curved floor      
         };
@@ -96,23 +96,16 @@ difference(){
         };
                                         // tube stuck thing
         translate([-pipe_diam/2 - min_wall - 0.01, 0, - height/2 + tube_diam*0.5])
-            rotate ([0, 90, 0]) cylinder(stuck_width, tube_diam * 0.5, tube_diam * 0.5, false);        
-                                        // spacer for rubber holder
-        translate([ pipe_diam/4, 0, 0])v_ellipse(       
-            xy = sqrt(3/4) * pipe_diam + min_wall * 12 + rubber_thick * 2, 
-            z = sqrt(3/4) * height + min_wall * 12 + rubber_thick * 2, 
-            xtr = pipe_diam); 
-        hull(){                         // spacer for screw mechanics
-            for (i = [screw_place[0], - screw_place[0]])
-                for (j = [screw_place[1], - screw_place[1]])
-                translate ([pipe_diam/4, i - pipe_diam/2, j - pipe_diam + screw_spacer + min_wall]) 
-                    cube ([pipe_diam, pipe_diam, pipe_diam], false);    
-        };   
-        for (i = [screw_place[0], - screw_place[0]])    // screw holes
+            rotate ([0, 90, 0]) cylinder(stuck_width, tube_diam * 0.5, tube_diam * 0.5, false);       
+                                        // spacer for generator
+        translate([pipe_diam/4, - pipe_diam, - 2* height + inner_height - min_wall]) 
+            cube([pipe_diam/2, 2* pipe_diam, 2* height]);  
+                                        // screw holes
+        for (i = [screw_place[0], - screw_place[0]])    
             for (j = [screw_place[1], - screw_place[1]])
                 translate ([pipe_diam/4 - min_wall, i, j]) rotate ([0, -90, 0])
                     M3_spacer();
-        for (i= [-screw_place[0], screw_place[0]])      // nut spacers in the bottom of the pipe
+        for (i= [-screw_place[0], screw_place[0]])   // nut spacers in the bottom of the pipe
         hull(){                    
             translate ([pipe_diam/4 - min_wall, i, - screw_place[1]])
                 rotate ([0, -90, 0]) cylinder( stuck_width, 3.1, 3.3, false, $fn = 6);
@@ -122,7 +115,7 @@ difference(){
     };
 };
 
-difference(){                   // inner wall of generator
+difference(){                           // inner wall of generator
     difference(){    
         hull(){      
            intersection(){ 
@@ -153,7 +146,7 @@ difference(){                   // inner wall of generator
         out_wedge();
     };
 };
-difference(){                   // outer wall generator
+difference(){                           // outer wall generator
     hull(){      
         intersection(){ 
             translate ([pipe_diam/4, - pipe_diam, - height/2 - min_wall])
@@ -181,22 +174,22 @@ difference(){                   // outer wall generator
 };
 };
 
-//translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
-difference(){           // inner ruber holder
+translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
+difference(){                           // inner ruber holder
     translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
         xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8, xtr = stuck_width);
     translate([ pipe_diam/4 + stuck_width/2 - 0.1, 0, 0])v_ellipse(
         xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6, xtr = stuck_width + 0.2);  
 };
 
-//translate([ - stuck_width/2, pipe_diam + min_wall, min_wall]) rotate([0,90,0])
-difference(){               // outer rubber holder
+translate([ - stuck_width/2, pipe_diam + min_wall, min_wall]) rotate([0,90,0])
+difference(){                           // outer rubber holder
     union(){
         translate([ pipe_diam/4 + stuck_width/2 - min_wall, 0, 0])v_ellipse(
             xy = sqrt(3/4) * pipe_diam + min_wall * 10 + rubber_thick * 2, 
             z = sqrt(3/4) * height + min_wall * 10 + rubber_thick * 2, 
             xtr = stuck_width + min_wall);
-        hull(){             // ears for screws
+        hull(){                         // ears for screws
             for (i = [screw_place[0], - screw_place[0]])
                 for (j = [screw_place[1], - screw_place[1]])
                 translate ([pipe_diam/4 + stuck_width * 1.5 - min_wall, i, j]) rotate ([0, 90, 0])
@@ -206,15 +199,16 @@ difference(){               // outer rubber holder
         };    
     };    
     union(){           
-        v_ellipse(          // cut-out above 
+        v_ellipse(                      // cut-out above 
             xy = sqrt(3/4) * pipe_diam + min_wall * 8 + rubber_thick * 2, 
             z = sqrt(3/4) * height + min_wall * 8 + rubber_thick * 2, 
             xtr = stuck_width * 1.5 + pipe_diam/4 - min_wall);
-        v_ellipse(          // cut-out lower 
+        v_ellipse(                      // cut-out lower 
             xy = sqrt(3/4) * pipe_diam + min_wall * 8 + rubber_thick, 
             z = sqrt(3/4) * height + min_wall * 8 + rubber_thick, 
-            xtr = stuck_width * 1.5 + pipe_diam/4 + min_wall);           
-        for (i = [screw_place[0], - screw_place[0]])    // screw spacers
+            xtr = stuck_width * 1.5 + pipe_diam/4 + min_wall);   
+                                        // screw spacers
+        for (i = [screw_place[0], - screw_place[0]])    
             for (j = [screw_place[1], - screw_place[1]])
                 translate ([pipe_diam/2 - stuck_width/2 + min_wall, i, j]) rotate ([0, 90, 0])
                     cylinder( stuck_width * 2, 1.6, 1.6, true, $fn = 15);
