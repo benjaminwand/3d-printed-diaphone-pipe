@@ -105,14 +105,14 @@ difference(){
             rotate ([0, 90, 0]) cylinder(stuck_width, tube_diam * 0.5, tube_diam * 0.5, false);        
         hull(){                         // spacer for rubber holder
             translate ([ min_wall, 0, 0])intersection(){ 
-                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, -pipe_diam - min_wall])
-                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
-                ellipse(xy = pipe_diam + 5 * min_wall, z = height + 5 * min_wall);
+                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, -height/2 - 2* min_wall])
+                    cube([0.01, pipe_diam * 2, height * 2 + 3* min_wall], false);
+                ellipse(xy = pipe_diam + 8 * min_wall, z = height + 8 * min_wall);
             }; 
             translate ([pipe_diam/2, 0, 0])intersection(){    
-                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, -pipe_diam - min_wall])
-                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
-                ellipse(xy = pipe_diam + 5 * min_wall, z = height + 5 * min_wall);
+                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, -height/2 - 2* min_wall])
+                    cube([0.01, pipe_diam * 2, height + 3* min_wall], false);
+                ellipse(xy = pipe_diam + 8 * min_wall, z = height + 8 * min_wall);
             }; 
         };  
         hull(){                         // spacer for screw mechanics
