@@ -29,7 +29,7 @@ if (inside_space_edge < 5) echo("this pipe is too thin");
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be at least" , screw_length , "mm long");
 
-//rotate([0, -90, 0])
+rotate([0, -90, 0])
 union() {                                   //Pipe part
 difference(){
     union(){                                // plus
@@ -181,7 +181,7 @@ difference(){               // outer wall generator
 };
 };
 
-//translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
+translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
 difference(){           // inner ruber holder
     translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
         xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8, xtr = stuck_width);
@@ -189,7 +189,7 @@ difference(){           // inner ruber holder
         xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6, xtr = stuck_width + 0.2);  
 };
 
-//translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
+translate([ - stuck_width/2, pipe_diam + min_wall, min_wall]) rotate([0,90,0])
 difference(){               // outer rubber holder
     union(){
         translate([ pipe_diam/4 + stuck_width/2 - min_wall, 0, 0])v_ellipse(
@@ -268,6 +268,4 @@ todo:
 ** bis pipe_diam 85: M3
 ** bis pipe_diam 130: M4
 ** größer pipe_diam 130: M5
-
-* "spacer for rubber holder" anpassen
 */
