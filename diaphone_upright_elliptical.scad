@@ -1,7 +1,7 @@
 include <OpenSCAD_support/_extrudes.scad>
 
 // adjust those
-pipe_diam = 20;
+pipe_diam = 40;
 pipe_wall_thick = 2.5;
 tube_diam = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thick = 1;   // generator rubber
@@ -276,8 +276,8 @@ module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(
 module in_wedge() {
     //color("blue") 
     xz_extrude_poly(
-    [[pipe_diam/2 + min_wall + vib_help, -height/4 - inside_space_edge], 
-    [pipe_diam/2 + min_wall + vib_help, -height/2], 
+    [[pipe_diam, -height/4 - inside_space_edge], 
+    [pipe_diam, -height/2], 
     [0, -height/2],
     [0, -height/4 - inside_space_edge + wedge_height]
     ], pipe_diam, true);
@@ -286,8 +286,8 @@ module in_wedge() {
 module out_wedge() {
     //color("red") 
     xz_extrude_poly(
-    [[pipe_diam/2 + min_wall + vib_help, -height/4 - inside_space_edge + min_wall],
-    [pipe_diam/2 + min_wall + vib_help, -height/2], 
+    [[pipe_diam, -height/4 - inside_space_edge + min_wall],
+    [pipe_diam, -height/2], 
     [0, -height/2],    
     [0, -height/4 - inside_space_edge + wedge_height + min_wall]
     ], pipe_diam, true);
