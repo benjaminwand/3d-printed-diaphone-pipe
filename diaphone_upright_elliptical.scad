@@ -189,6 +189,13 @@ difference(){               // outer wall generator
 };
 };
 
+//translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
+difference(){           // inner ruber holder
+    translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
+        xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8, xtr = stuck_width);
+    translate([ pipe_diam/4 + stuck_width/2 - 0.1, 0, 0])v_ellipse(
+        xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6, xtr = stuck_width + 0.2);  
+};
 
 //translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
 difference(){               // outer rubber holder
@@ -232,14 +239,6 @@ difference(){               // outer rubber holder
                 translate ([pipe_diam/2 - stuck_width/2 + min_wall, i, j]) rotate ([0, 90, 0])
                     cylinder( stuck_width * 2, 1.6, 1.6, true, $fn = 15);
     };
-};
-
-//translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
-difference(){           // inner ruber holder
-    translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
-        xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8, xtr = stuck_width);
-    translate([ pipe_diam/4 + stuck_width/2 - 0.1, 0, 0])v_ellipse(
-        xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6, xtr = stuck_width + 0.2);  
 };
 
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
