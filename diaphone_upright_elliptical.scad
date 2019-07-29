@@ -140,8 +140,8 @@ difference(){           // inner wall of generator
             }; 
             translate([pipe_diam/4 + 1.5 * stuck_width + vib_help, 0, 0]) 
                 v_ellipse(
-                xy = sqrt(pipe_diam*pipe_diam*3/4) - edge_slit_distance *2, 
-                z = sqrt(height*height*3/4) - edge_slit_distance *2);
+                xy = sqrt(3/4) * pipe_diam - edge_slit_distance *2, 
+                z = sqrt(3/4) * height - edge_slit_distance *2);
         };
         in_wedge();
     };
@@ -155,8 +155,8 @@ difference(){           // inner wall of generator
             }; 
             translate([pipe_diam/4 + 1.5 * stuck_width + vib_help + 0.1, 0, 0]) 
                 v_ellipse(
-                xy = sqrt(pipe_diam*pipe_diam*3/4) - edge_slit_distance *2 - min_wall*2, 
-                z = sqrt(height*height*3/4) - edge_slit_distance *2 - min_wall*2);
+                xy = sqrt(3/4) * pipe_diam - edge_slit_distance *2 - min_wall*2, 
+                z = sqrt(3/4) * height - edge_slit_distance *2 - min_wall*2);
         };   
         out_wedge();
     };
@@ -240,29 +240,17 @@ difference(){               // outer rubber holder
 //translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
 difference(){           // inner ruber holder
     hull(){      
-        translate([stuck_width/2, 0, 0])intersection(){ 
-            translate ([pipe_diam/4, - pipe_diam, - height])
-                cube([0.01, pipe_diam * 2, height * 2], false);
-            ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
-        }; 
-        translate ([stuck_width * 1.5, 0, 0])intersection(){    
-            translate ([pipe_diam/4, - pipe_diam, - height])
-                cube([0.01, pipe_diam * 2, height * 2], false);
-            ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
-        }; 
+        translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
+    xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8);
+        translate ([pipe_diam/4 + stuck_width * 1.5, 0, 0])v_ellipse(
+    xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8);
     };
-    hull(){  
-        translate ([stuck_width/2 - 0.1, 0, 0])intersection(){ 
-            translate ([pipe_diam/4, - pipe_diam, - height])
-                cube([0.01, pipe_diam * 2, height * 2], false);
-            ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
-        }; 
-        translate ([stuck_width * 1.5 + 0.1, 0, 0])intersection(){    
-            translate ([pipe_diam/4, - pipe_diam, - height])
-                cube([0.01, pipe_diam * 2, height * 2], false);
-            ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
-        }; 
-    };
+    hull(){      
+        translate([ pipe_diam/4 + stuck_width/2 - 0.1, 0, 0])v_ellipse(
+    xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6);
+        translate ([pipe_diam/4 + stuck_width * 1.5 + 0.1, 0, 0])v_ellipse(
+    xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6);
+    };    
 };
 
 
@@ -280,8 +268,8 @@ color("red") intersection(){
         cube([0.01, pipe_diam * 2, height], false);
     ellipse();
 };
-color("red") translate([pipe_diam/4 + 1.5 * stuck_width + vib_help, 0, 0]) v_ellipse(
-    xy = sqrt(pipe_diam*pipe_diam*3/4) - edge_slit_distance *2, z = sqrt(height*height*3/4) - edge_slit_distance *2);
+color("red") translate([pipe_diam/4 + 1.5 * stuck_width, 0, 0]) v_ellipse(
+    xy = sqrt(3/4) * pipe_diam + min_wall * 4, z = sqrt(3/4) * height + min_wall * 4);
 */
 
 module in_wedge() {
