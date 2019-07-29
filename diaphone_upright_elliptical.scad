@@ -9,22 +9,24 @@ rubber_thick = 1;   // generator rubber
 // proportions
 height = 2 * pipe_diam;
 min_wall = 1.2 + pipe_diam * 0.005;
-inner_diam = pipe_diam * 0.7;
+inner_diam = pipe_diam - 2 * pipe_wall_thick;
 stuck_width = pipe_diam * 0.15 + 3;
 vib_help = pipe_diam * 0.01;            // vibration
 screw_place = 
-    [(pipe_diam/2 + 1.6)/sqrt(2), pipe_diam/2 + (pipe_diam/2 + 1.6)/sqrt(2)];
-wedge_height = 0;
+    [(pipe_diam/2 + 1.6)/sqrt(2), height * 0.45];
+wedge_height = 0;                       // make sure the air can get through
 screw_spacer = min_wall + 2;            // change this when adapting for different screws!!
 fn = round(pipe_diam/2 + 30);
 
-edge_slit_distance = 4;
-inside_space_edge = 
+edge_slit_distance = pipe_diam/12;
+inside_space_edge =                     // used in wedge modules
     (pipe_diam/2 - rubber_thick - 3.5 * min_wall - inner_diam/2) 
     > edge_slit_distance 
     ? inner_diam/2 + min_wall
     : pipe_diam/2 - rubber_thick - 2.5 * min_wall - edge_slit_distance;
 if (inside_space_edge < 5) echo("this pipe is too thin");
+    
+echo (edge_slit_distance = edge_slit_distance);
     
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be at least" , screw_length , "mm long");
@@ -95,8 +97,7 @@ difference(){
                     translate ([pipe_diam/2 - stuck_width * 1.5 +  min_wall, - pipe_diam/2, 
                     -height/2 - min_wall])
                         cube([0.01, pipe_diam, height + min_wall], false);
-                    ellipse();
-               
+                    ellipse();             
             };
         };
                                         // tube stuck thing
@@ -134,37 +135,39 @@ difference(){
         };
     };
 };
-/*
+
 difference(){           // inner wall of generator
     difference(){    
-        hull(){
-            for (i = [-pipe_diam/2, pipe_diam/2])
-                translate ([pipe_diam/2 - stuck_width * 1.5, 0, i]) rotate ([0, 90, 0])
-                    cylinder (stuck_width* 1.5 + vib_help + min_wall, 
-                        pipe_diam/2 - rubber_thick - 2.5 * min_wall, inside_space_edge - min_wall, 
-                        false, $fn = fn);
-            translate ([pipe_diam/2 - stuck_width * 1.5, 0, 0]) rotate ([0, 90, 0])
-                cylinder (stuck_width* 1.5 + vib_help + min_wall, 
-                    pipe_diam/2 - rubber_thick - 1.5 * min_wall, inside_space_edge, 
-                    false, $fn = fn);
+        hull(){      
+            intersection(){ 
+                translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
+                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+                ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
+            }; 
+            translate ([stuck_width * 1.5 + min_wall + vib_help, 0, 0])intersection(){    
+                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, - height/2 - min_wall])
+                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+                ellipse(xy = pipe_diam - 2 * min_wall  - edge_slit_distance, z = height - 2 * min_wall - edge_slit_distance);
+            }; 
         };
         in_wedge();
     };
     difference(){
-        hull(){
-            for (i = [-pipe_diam/2, pipe_diam/2])
-                translate ([pipe_diam/2 - stuck_width * 1.5 -1, 0, i]) rotate ([0, 90, 0])
-                    cylinder (stuck_width * 1.5 + 2 + vib_help + min_wall, 
-                        pipe_diam/2- rubber_thick - 4 * min_wall, inside_space_edge - 2* min_wall, 
-                        false, $fn = fn);    
-            translate ([pipe_diam/2 - stuck_width * 1.5 -1, 0, 0]) rotate ([0, 90, 0])
-                cylinder (stuck_width * 1.5 + 2+ vib_help + min_wall, 
-                    pipe_diam/2- rubber_thick - 3 * min_wall, inside_space_edge - min_wall, 
-                    false, $fn = fn);  
-        };    
-    out_wedge();
+        hull(){  
+            translate ([ - 0.1, 0, 0])intersection(){ 
+                translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam/2, - height/2 - min_wall])
+                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+                ellipse();
+            }; 
+            translate ([stuck_width * 1.5 + min_wall+ vib_help + 0.1, 0, 0])intersection(){    
+                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, - height/2 - min_wall])
+                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
+                ellipse(xy = pipe_diam - 4 * min_wall - edge_slit_distance, z = height - 4 * min_wall - edge_slit_distance);
+            }; 
+        };   
+        out_wedge();
     };
-};*/
+};
 difference(){               // outer wall generator
     hull(){      
         intersection(){ 
@@ -192,8 +195,6 @@ difference(){               // outer wall generator
     };
 };
 };
-
-
 
 /*
 //translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
@@ -239,29 +240,38 @@ difference(){               // outer rubber holder
                     cylinder( stuck_width * 2, 1.6, 1.6, true, $fn = 15);
     };
 };
+*/
+
+
 
 //translate([ - stuck_width/2, - pipe_diam, 0]) rotate([0,90,0])
 difference(){           // inner ruber holder
-    hull(){
-    for (i = [pipe_diam/2, -pipe_diam/2])
-        translate ([pipe_diam/2 - stuck_width + 2* min_wall, 0, i]) rotate ([0, 90, 0])
-            cylinder (stuck_width - min_wall, pipe_diam/2 - rubber_thick - min_wall, 
-                pipe_diam/2 - rubber_thick - min_wall, false, $fn = fn);
-    translate ([pipe_diam/2 - stuck_width + 2* min_wall, 0, 0]) rotate ([0, 90, 0])
-        cylinder (stuck_width -min_wall, pipe_diam/2 - rubber_thick, 
-            pipe_diam/2 - rubber_thick, false, $fn = fn);
+    hull(){      
+        translate([stuck_width /2 + min_wall, 0, 0])intersection(){ 
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
+            ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
+        }; 
+        translate ([stuck_width * 1.5 + min_wall, 0, 0])intersection(){    
+            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
+            ellipse(xy = pipe_diam + 6 * min_wall, z = height + 6 * min_wall);
+        }; 
     };
-    hull(){
-    for (i = [pipe_diam/2, -pipe_diam/2])
-        translate ([pipe_diam/2 - stuck_width + 2* min_wall -1, 0, i]) rotate ([0, 90, 0])
-            cylinder (stuck_width + 2, pipe_diam/2- rubber_thick - 2* min_wall, 
-                pipe_diam/2 - rubber_thick - 2* min_wall, false, $fn = fn);        
-    translate ([pipe_diam/2 - stuck_width + 2* min_wall -1, 0, 0]) rotate ([0, 90, 0])
-        cylinder (stuck_width + 2, pipe_diam/2- rubber_thick -min_wall, 
-            pipe_diam/2 - rubber_thick -min_wall, false, $fn = fn);
-    };    
+    hull(){  
+        translate ([stuck_width /2 + min_wall - 0.1, 0, 0])intersection(){ 
+            translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
+            ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
+        }; 
+        translate ([stuck_width * 1.5 + min_wall + 0.1, 0, 0])intersection(){    
+            translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, - height/2 - min_wall])
+                cube([0.01, pipe_diam * 2, height + min_wall], false);
+            ellipse(xy = pipe_diam + 4 * min_wall, z = height + 4 * min_wall);
+        }; 
+    };
 };
-*/
+
 
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
 
