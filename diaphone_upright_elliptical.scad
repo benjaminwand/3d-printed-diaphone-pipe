@@ -60,27 +60,25 @@ difference(){
         };
         intersection(){                    // outer loft (but flat)
             hull(){        
-                translate([-pipe_diam/2, - pipe_diam/2, 
-                    - pipe_diam + tube_diam*0.5 - tube_diam/2 - min_wall])
-                        cube ([0.01, pipe_diam, tube_diam + 2*min_wall], false);        
+                translate([-pipe_diam/2, - pipe_diam/2, - pipe_diam - min_wall])
+                    cube ([0.01, pipe_diam, tube_diam + 2*min_wall], false);        
                 translate([-pipe_diam/2 - min_wall + stuck_width, - pipe_diam/2, 
-                    - pipe_diam + tube_diam*0.5 - tube_diam/2 - min_wall])
+                    - pipe_diam - min_wall])
                     cube ([0.01, pipe_diam, tube_diam + 2*min_wall], false);
                 intersection(){
-                    translate([pipe_diam/2 - 1.5 * stuck_width + min_wall, - pipe_diam/2, 
-                        - pipe_diam + tube_diam*0.5 - tube_diam/2 - min_wall])
+                    translate([pipe_diam/4 - min_wall, - pipe_diam/2, - height/2 - min_wall])
                         cube ([0.01, pipe_diam, pipe_diam], false);
                     out_wedge();
                 };     
             };
-            cylinder(2 * pipe_diam, pipe_diam/2, pipe_diam/2, true);
+            cylinder(height + 2* min_wall, pipe_diam/2, pipe_diam/2, true);
         }; 
         difference(){
             intersection(){         // connection - pipe - generator
-                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam/2, -pipe_diam - min_wall])
-                    cube([pipe_diam/2, pipe_diam, pipe_diam * 2 + 4* min_wall], false);
+                translate ([pipe_diam/4 - min_wall, - pipe_diam/2, -height/2 - min_wall])
+                    cube([pipe_diam/2, pipe_diam, height + 4* min_wall], false);
                 translate ([0,0,  -pipe_diam - min_wall])
-                    cylinder (pipe_diam * 2 + 4* min_wall, pipe_diam/2, pipe_diam/2, false);
+                    cylinder (height + 4* min_wall, pipe_diam/2, pipe_diam/2, false);
             };   
             ellipse();              // making a hole into it       
         };   
@@ -92,8 +90,7 @@ difference(){
             translate([0.01, 0, 0])
                 intersection(){
                     in_wedge();
-                    translate ([pipe_diam/2 - stuck_width * 1.5 +  min_wall, - pipe_diam/2, 
-                    -height/2 - min_wall])
+                    translate ([pipe_diam/4 - min_wall, - pipe_diam/2, -height/2 - min_wall])
                         cube([0.01, pipe_diam, height + min_wall], false);
                     ellipse();             
             };
@@ -102,13 +99,13 @@ difference(){
         translate([-pipe_diam/2 - min_wall - 0.01, 0, - height/2 + tube_diam*0.5])
             rotate ([0, 90, 0]) cylinder(stuck_width, tube_diam * 0.5, tube_diam * 0.5, false);        
         hull(){                         // spacer for rubber holder
-            translate ([ min_wall, 0, 0])intersection(){ 
-                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, -height/2 - 2* min_wall])
+            intersection(){ 
+                translate ([pipe_diam/4, - pipe_diam, -height/2 - 2* min_wall])
                     cube([0.01, pipe_diam * 2, height * 2 + 4* min_wall], false);
                 ellipse(xy = pipe_diam + 8 * min_wall, z = height + 8 * min_wall);
             }; 
             translate ([pipe_diam/2, 0, 0])intersection(){    
-                translate ([pipe_diam/2 - stuck_width * 1.5, - pipe_diam, -height/2 - 2* min_wall])
+                translate ([pipe_diam/4, - pipe_diam, -height/2 - 2* min_wall])
                     cube([0.01, pipe_diam * 2, height + 4* min_wall], false);
                 ellipse(xy = pipe_diam + 8 * min_wall, z = height + 8 * min_wall);
             }; 
@@ -116,19 +113,19 @@ difference(){
         hull(){                         // spacer for screw mechanics
             for (i = [screw_place[0], - screw_place[0]])
                 for (j = [screw_place[1], - screw_place[1]])
-                translate ([pipe_diam/2 - stuck_width* 1.5 + min_wall, i, j]) rotate ([0, 90, 0])
+                translate ([pipe_diam/4, i, j]) rotate ([0, 90, 0])
                     cylinder (stuck_width * 1.5, screw_spacer + 2* min_wall, 
                         screw_spacer + 2* min_wall, false, $fn = fn/2);      
         };   
         for (i = [screw_place[0], - screw_place[0]])       // screw holes
             for (j = [screw_place[1], - screw_place[1]])
-                translate ([pipe_diam/2 - stuck_width* 1.5, i, j]) rotate ([0, -90, 0])
+                translate ([pipe_diam/4 - min_wall, i, j]) rotate ([0, -90, 0])
                     M3_spacer();
         for (i= [-screw_place[0], screw_place[0]])      // nut spacers in the bottom of the pipe
         hull(){                    
-            translate ([pipe_diam/2 - stuck_width* 1.5, i, - screw_place[1]])
+            translate ([pipe_diam/4 - min_wall, i, - screw_place[1]])
                 rotate ([0, -90, 0]) cylinder( stuck_width, 3.1, 3.3, false, $fn = 6);
-            translate ([pipe_diam/2 - stuck_width* 1.5, i, - screw_place[1] - stuck_width]) 
+            translate ([pipe_diam/4 - min_wall, i, - screw_place[1] - stuck_width]) 
                     rotate ([0, -90, 0]) cylinder( stuck_width, 3.1, 3.3, false, $fn = 6);   
         };
     };
@@ -273,24 +270,38 @@ difference(){           // inner ruber holder
 
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
 
+/*
+module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4) + min_wall, z = sqrt(height*height*3/4) + 2*min_wall) 
+    rotate ([0, 90, 0])
+        linear_extrude (0.01)   
+            resize (newsize=[z, xy]) circle(r=10, $fn=fn);
+
+color("blue") translate([pipe_diam/4 - min_wall, 0, 0]) v_ellipse();
+color("red") intersection(){ 
+    translate ([pipe_diam/2 - stuck_width * 1.5 + min_wall, - pipe_diam, - height/2])
+        cube([0.01, pipe_diam * 2, height], false);
+    ellipse();
+};
+*/
+
 module in_wedge() {
     //color("blue") 
     xz_extrude_poly(
-    [[pipe_diam, -height/4 - inside_space_edge], 
-    [pipe_diam, -height/2], 
+    [[pipe_diam * 0.5 + 3* min_wall, (-height/2 + edge_slit_distance/2) * 0.87],
+    [pipe_diam * 0.5 + 3* min_wall, -height/2], 
     [0, -height/2],
     [0, -height/4 - inside_space_edge + wedge_height]
-    ], pipe_diam, true);
+    ], pipe_diam * 2, true);
 };
 
 module out_wedge() {
     //color("red") 
     xz_extrude_poly(
-    [[pipe_diam, -height/4 - inside_space_edge + min_wall],
-    [pipe_diam, -height/2], 
+    [[pipe_diam * 0.5 + 3* min_wall, (-height/2 + edge_slit_distance/2) * 0.87 + min_wall],
+    [pipe_diam * 0.5 + 3* min_wall, -height/2], 
     [0, -height/2],    
     [0, -height/4 - inside_space_edge + wedge_height + min_wall]
-    ], pipe_diam, true);
+    ], pipe_diam * 2, true);
 };
 
 module cylinder_outer(height,radius,fn){  	//from https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/undersized_circular_objects
@@ -307,12 +318,22 @@ module M3_spacer() {
 
 /*
 todo:
+
+* refactorn auf richtige Ellipsen und keine Schnitte die sich von einender ableiten
+
+* refactorn auf cut ist bei pipe_diam/2, stuck_with geht nach aussen.
+
 * outer generator
+
 * Platz für überstehendes Plastik machen
+
 * schrauben größe flexibel machen
 ** bis pipe_diam 30: M2.5
 ** bis pipe_diam 85: M3
 ** bis pipe_diam 130: M4
 ** größer pipe_diam 130: M5
+
 * muttern-löcher flacher machen (auch parametrisch)
+
+* "spacer for rubber holder" anpassen
 */
