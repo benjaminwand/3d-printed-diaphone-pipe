@@ -13,7 +13,7 @@ inner_diam = pipe_diam - 2 * pipe_wall_thick;
 stuck_width = pipe_diam * 0.15 + 3;
 vib_help = pipe_diam * 0.01;            // vibration
 screw_place = 
-    [(pipe_diam/2 + 1.6)/sqrt(2), height * 0.45];
+    [(pipe_diam/2 + 1.6)/sqrt(2), height * 0.42];
 wedge_height = 0;                       // make sure the air can get through
 screw_spacer = min_wall + 2;            // change this when adapting for different screws!!
 fn = round(pipe_diam/2 + 30);
@@ -200,40 +200,28 @@ difference(){           // inner ruber holder
 //translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
 difference(){               // outer rubber holder
     union(){
-        hull(){             // outer shape
-            for (i = [pipe_diam/2, -pipe_diam/2])
-                translate ([pipe_diam/2 - stuck_width + min_wall, 0, i]) rotate ([0, 90, 0])
-                    cylinder (stuck_width, pipe_diam/2, pipe_diam/2, false, $fn = fn);
-            translate ([pipe_diam/2 - stuck_width + min_wall, 0, 0]) rotate ([0, 90, 0])
-                cylinder (stuck_width, pipe_diam/2 + min_wall, pipe_diam/2 + min_wall, 
-                    false, $fn = fn);
-        };
+        translate([ pipe_diam/4 + stuck_width/2 - min_wall, 0, 0])v_ellipse(
+            xy = sqrt(3/4) * pipe_diam + min_wall * 10 + rubber_thick * 2, 
+            z = sqrt(3/4) * height + min_wall * 10 + rubber_thick * 2, 
+            xtr = stuck_width + min_wall);
         hull(){             // ears for screws
             for (i = [screw_place[0], - screw_place[0]])
                 for (j = [screw_place[1], - screw_place[1]])
-                translate ([pipe_diam/2 , i, j]) rotate ([0, 90, 0])
+                translate ([pipe_diam/4 + stuck_width * 1.5 - min_wall, i, j]) rotate ([0, 90, 0])
                     cylinder (min_wall, screw_spacer, screw_spacer, false, $fn = fn/2);
-        translate ([0, 0, pipe_diam/2]) sphere (1);
-        translate ([0, 0, - pipe_diam/2]) sphere (1);                
+        translate ([pipe_diam/4, 0, height/4]) sphere (1);
+        translate ([pipe_diam/4, 0, - height/4]) sphere (1);                
         };    
     };    
-    union(){
-        hull(){                 // cut-out above 
-        for (i = [pipe_diam/2, -pipe_diam/2])
-            translate ([- pipe_diam/2 , 0, i]) rotate ([0, 90, 0])
-                cylinder (pipe_diam, pipe_diam/2 - min_wall, pipe_diam/2 - min_wall, false, $fn = fn);
-        translate ([- pipe_diam/2 , 0, 0]) rotate ([0, 90, 0])
-            cylinder (pipe_diam, pipe_diam/2, pipe_diam/2, false, $fn = fn);
-        };
-        hull(){                 // lower cut-out
-        for (i = [pipe_diam/2, -pipe_diam/2])
-            translate ([pipe_diam/2 - stuck_width + min_wall -1, 0, i]) rotate ([0, 90, 0])
-                cylinder (stuck_width + 2, pipe_diam/2 - min_wall * 1.5, pipe_diam/2 - min_wall * 1.5, 
-                    false, $fn = fn);
-        translate ([pipe_diam/2 - stuck_width + min_wall -1, 0, 0]) rotate ([0, 90, 0])
-            cylinder (stuck_width + 2, pipe_diam/2 - min_wall/2, pipe_diam/2 - min_wall/2, 
-                false, $fn = fn);
-        };             
+    union(){           
+        v_ellipse(          // cut-out above 
+            xy = sqrt(3/4) * pipe_diam + min_wall * 8 + rubber_thick * 2, 
+            z = sqrt(3/4) * height + min_wall * 8 + rubber_thick * 2, 
+            xtr = stuck_width * 1.5 + pipe_diam/4 - min_wall);
+        v_ellipse(          // cut-out lower 
+            xy = sqrt(3/4) * pipe_diam + min_wall * 8 + rubber_thick, 
+            z = sqrt(3/4) * height + min_wall * 8 + rubber_thick, 
+            xtr = stuck_width * 1.5 + pipe_diam/4 + min_wall);           
         for (i = [screw_place[0], - screw_place[0]])    // screw spacers
             for (j = [screw_place[1], - screw_place[1]])
                 translate ([pipe_diam/2 - stuck_width/2 + min_wall, i, j]) rotate ([0, 90, 0])
@@ -287,8 +275,6 @@ module M3_spacer() {
 
 /*
 todo:
-
-* outer generator
 
 * schrauben größe flexibel machen
 ** bis pipe_diam 30: M2.5
