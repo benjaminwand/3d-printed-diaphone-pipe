@@ -28,7 +28,7 @@ if (inside_space_edge < 5) echo("this pipe is too thin");
     
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be at least" , screw_length , "mm long");
-/*
+
 //rotate([0, -90, 0])
 union() {                                   //Pipe part
 difference(){
@@ -138,13 +138,10 @@ difference(){           // inner wall of generator
                     cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
                 ellipse(xy = pipe_diam + 2 * min_wall, z = height + 2 * min_wall);
             }; 
-            translate ([stuck_width * 1.5 + vib_help, 0, 0])
-            intersection(){    
-                translate ([pipe_diam/4, - pipe_diam/2, - height/2 - min_wall])
-                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
-                ellipse(xy = pipe_diam - 2 * min_wall - edge_slit_distance, 
-                z = height - 2 * min_wall - edge_slit_distance);
-            }; 
+            translate([pipe_diam/4 + 1.5 * stuck_width + vib_help, 0, 0]) 
+                v_ellipse(
+                xy = sqrt(pipe_diam*pipe_diam*3/4) - edge_slit_distance *2, 
+                z = sqrt(height*height*3/4) - edge_slit_distance *2);
         };
         in_wedge();
     };
@@ -156,13 +153,10 @@ difference(){           // inner wall of generator
                     cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
                 ellipse();
             }; 
-            translate ([stuck_width * 1.5 + vib_help + 0.1, 0, 0])
-            intersection(){    
-                translate ([pipe_diam/4, - pipe_diam/2, - height/2 - min_wall])
-                    cube([0.01, pipe_diam, pipe_diam * 2 + min_wall], false);
-                ellipse(xy = pipe_diam - 4 * min_wall - edge_slit_distance, 
-                z = height - 4 * min_wall - edge_slit_distance);
-            }; 
+            translate([pipe_diam/4 + 1.5 * stuck_width + vib_help + 0.1, 0, 0]) 
+                v_ellipse(
+                xy = sqrt(pipe_diam*pipe_diam*3/4) - edge_slit_distance *2 - min_wall*2, 
+                z = sqrt(height*height*3/4) - edge_slit_distance *2 - min_wall*2);
         };   
         out_wedge();
     };
@@ -193,7 +187,7 @@ difference(){               // outer wall generator
         }; 
     };
 };
-};*/
+};
 
 /*
 //translate([ - stuck_width/2, pipe_diam + min_wall, 0]) rotate([0,90,0])
@@ -280,13 +274,15 @@ module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4)
         linear_extrude (0.01)   
             resize (newsize=[z, xy]) circle(r=10, $fn=fn);
 
-color("blue") translate([pipe_diam/4, 0, 0]) v_ellipse();
+/*color("blue") translate([pipe_diam/4, 0, 0]) v_ellipse();
 color("red") intersection(){ 
     translate ([pipe_diam/4, - pipe_diam, - height/2]) 
         cube([0.01, pipe_diam * 2, height], false);
     ellipse();
 };
-
+color("red") translate([pipe_diam/4 + 1.5 * stuck_width + vib_help, 0, 0]) v_ellipse(
+    xy = sqrt(pipe_diam*pipe_diam*3/4) - edge_slit_distance *2, z = sqrt(height*height*3/4) - edge_slit_distance *2);
+*/
 
 module in_wedge() {
     //color("blue") 
