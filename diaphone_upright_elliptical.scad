@@ -17,13 +17,7 @@ screw_place = [ pipe_diam/3.5 + min_wall * 5,
 wedge_height = 0;                       // make sure the air can get through
 screw_spacer = min_wall + 2;            // change this when adapting for different screws!!
 fn = round(pipe_diam/2 + 30);
-edge_slit_distance = pipe_diam/12;
-inside_space_edge =                     // used in wedge modules
-    (pipe_diam/2 - rubber_thick - 3.5 * min_wall - inner_diam/2) 
-    > edge_slit_distance 
-    ? inner_diam/2 + min_wall
-    : pipe_diam/2 - rubber_thick - 2.5 * min_wall - edge_slit_distance;
-if (inside_space_edge < 5) echo("this pipe is too thin");   
+edge_slit_distance = pipe_diam/12;  
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo("your screws need to be at least" , screw_length , "mm long");
 inner_height = sqrt(3) * height/4 + min_wall * 7 + rubber_thick;
