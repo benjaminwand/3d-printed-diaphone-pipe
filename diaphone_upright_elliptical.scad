@@ -13,7 +13,7 @@ inner_diam = pipe_diam - 2 * pipe_wall_thick;
 stuck_width = pipe_diam * 0.15 + 3;
 vib_help = pipe_diam * 0.01;            // vibration
 screw_place = [ pipe_diam/3.5 + min_wall * 5, 
-                height/3 + min_wall * 5 ];
+                height/3 + min_wall * 5 + rubber_thick ];
 wedge_height = 0;                       // make sure the air can get through
 screw_spacer = min_wall + 2;            // change this when adapting for different screws!!
 fn = round(pipe_diam/2 + 30);
@@ -40,7 +40,7 @@ difference(){
                     [pipe_diam/2 + min_wall, inner_height + stuck_width],
                     [pipe_diam/2, inner_height + stuck_width],
                     [pipe_diam/2, inner_height],
-                    [pipe_diam/2 - pipe_wall_thick, inner_height],
+                    [inner_diam/2, inner_height],
                     [pipe_diam/2, 0],
                     [0, 0] ] );
             ellipse();                  // curved floor      
@@ -174,7 +174,7 @@ difference(){                           // outer wall generator
 };
 };
 
-translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
+//translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
 difference(){                           // inner ruber holder
     translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
         xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8, xtr = stuck_width);
@@ -182,7 +182,7 @@ difference(){                           // inner ruber holder
         xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6, xtr = stuck_width + 0.2);  
 };
 
-translate([ - stuck_width/2, pipe_diam + min_wall, min_wall]) rotate([0,90,0])
+//translate([ - stuck_width/2, pipe_diam + min_wall, min_wall]) rotate([0,90,0])
 difference(){                           // outer rubber holder
     union(){
         translate([ pipe_diam/4 + stuck_width/2 - min_wall, 0, 0])v_ellipse(
