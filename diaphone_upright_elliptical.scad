@@ -19,7 +19,7 @@ screw_spacer = min_wall + 2;            // change this when adapting for differe
 fn = round(pipe_diam/2 + 30);
 edge_slit_distance = pipe_diam/12;  
 screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
-echo("your screws need to be at least" , screw_length , "mm long");
+echo(str("your screws need to be at least " , screw_length , " mm long"));
 inner_height = sqrt(3) * height/4 + min_wall * 7 + rubber_thick;
 
 //rotate([0, -90, 0])
