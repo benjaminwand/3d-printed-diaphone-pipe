@@ -212,9 +212,7 @@ difference(){                           // outer rubber holder
 module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
 
 module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4), xtr = 0.01) 
-    rotate ([0, 90, 0])
-        linear_extrude (xtr)   
-            resize (newsize=[z, xy]) circle(r=10, $fn=fn);
+    yz_extrude (xtr) resize (newsize=[xy, z]) circle(r=10, $fn=fn);
 
 module in_wedge() {
     //color("blue") 
