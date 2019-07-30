@@ -27,18 +27,17 @@ union() {                               // pipe part
 difference(){
     union(){                            // plus
         difference(){                   // basic shape
-            rotate_extrude($fn=fn)
-                polygon( points=[
-                    [0, - height/2 - min_wall],
-                    [pipe_diam/2 + min_wall, - height/2 - min_wall],
-                    [pipe_diam/2 + min_wall, inner_height + stuck_width],
-                    [pipe_diam/2, inner_height + stuck_width],
-                    [pipe_diam/2, inner_height],
-                    [inner_diam/2, inner_height],
-                    [pipe_diam/2, 0],
-                    [0, 0] ] );
-            ellipse();                  // curved floor      
-        };
+            translate([0, 0, -height/2 - min_wall]) 
+                cylinder (height/2 + min_wall + inner_height + stuck_width, 
+                pipe_diam/2 + min_wall, pipe_diam/2 + min_wall, false, $fn=fn);
+            union (){
+                translate([0, 0, inner_height])     // pipe stuck-in
+                    cylinder (2 * stuck_width, pipe_diam/2, pipe_diam/2, false, $fn=fn);
+                                        // inner cutout
+                cylinder (height, pipe_diam/2, inner_diam/2, false, $fn=fn);
+                ellipse();              // curved floor  
+            };
+        };        
         intersection(){                 // octagonal shape on back for print
             translate([0, 0, -height/2 - min_wall]) rotate([0, 0, 135])
                 cube ([pipe_diam, pipe_diam, inner_height + min_wall + height/2 + stuck_width], false);
