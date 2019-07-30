@@ -22,7 +22,7 @@ screw_length = 2 * min_wall + 1.5 * stuck_width + 3;
 echo(str("your screws need to be at least " , screw_length , " mm long"));
 inner_height = sqrt(3) * height/4 + min_wall * 7 + rubber_thick;
 
-//rotate([0, -90, 0])
+rotate([0, -90, 0])
 union() {                               // pipe part
 difference(){
     union(){                            // plus
@@ -172,7 +172,7 @@ difference(){                           // outer wall generator
 };
 };
 
-//translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
+translate([ - stuck_width/2, - pipe_diam, min_wall]) rotate([0,90,0])
 difference(){                           // inner ruber holder
     translate([ pipe_diam/4 + stuck_width/2, 0, 0])v_ellipse(
         xy = sqrt(3/4) * pipe_diam + min_wall * 8, z = sqrt(3/4) * height + min_wall * 8, xtr = stuck_width);
@@ -180,7 +180,7 @@ difference(){                           // inner ruber holder
         xy = sqrt(3/4) * pipe_diam + min_wall * 6, z = sqrt(3/4) * height + min_wall * 6, xtr = stuck_width + 0.2);  
 };
 
-//translate([ - stuck_width/2, pipe_diam + min_wall, min_wall]) rotate([0,90,0])
+translate([ - stuck_width/2, pipe_diam + min_wall, min_wall]) rotate([0,90,0])
 difference(){                           // outer rubber holder
     union(){
         translate([ pipe_diam/4 + stuck_width/2 - min_wall, 0, 0])v_ellipse(
@@ -213,10 +213,10 @@ difference(){                           // outer rubber holder
     };
 };
 
-module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere(r=10, $fn=fn);
+module ellipse(xy = pipe_diam, z = height) resize (newsize=[xy, xy , z]) sphere($fn=fn);
 
 module v_ellipse(xy = sqrt(pipe_diam*pipe_diam*3/4), z = sqrt(height*height*3/4), xtr = 0.01) 
-    yz_extrude (xtr) resize (newsize=[xy, z]) circle(r=10, $fn=fn);
+    yz_extrude (xtr) resize (newsize=[xy, z]) circle($fn=fn);
 
 module in_wedge() {
     //color("blue") 
