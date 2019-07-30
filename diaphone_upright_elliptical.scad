@@ -75,6 +75,11 @@ difference(){
             };   
             ellipse();                  // making a hole into it       
         };   
+                                        // support for nuts at odd pipe sizes
+        for (i = [screw_place[0], - screw_place[0]])    
+            for (j = [screw_place[1], - screw_place[1]])
+                translate ([pipe_diam/4 - min_wall, i, j])
+                    rotate ([0, -90, 0]) cylinder (2* min_wall, 1.2 * screw_spacer, screw_spacer, true);
     };
     union(){                            // minus
         hull(){                         // inner flue
