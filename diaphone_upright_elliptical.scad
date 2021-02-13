@@ -11,7 +11,7 @@ height = sqrt(2) * pipe_diam;
 min_wall = 1.2 + pipe_diam * 0.005;
 inner_diam = pipe_diam - 2 * pipe_wall_thick;
 stuck_width = pipe_diam * 0.15 + 3;
-vib_help = pipe_diam * 0.01;            // vibration
+vib_help = pipe_diam * 0.005;            // vibration
 screw_place = [ pipe_diam/3.5 + min_wall * 5, 
                 height/3 + min_wall * 5 + rubber_thick ];
 wedge_height = 0;                       // make sure the air can get through
@@ -35,7 +35,7 @@ difference(){
                     cylinder (2 * stuck_width, pipe_diam/2, pipe_diam/2, false, $fn=fn);
                                         // inner cutout
                 cylinder (height, pipe_diam/2, inner_diam/2, false, $fn=fn);
-                ellipse();              // curved floor  
+                ellipse();              // curved floor                
             };
         };        
         intersection(){                 // octagonal shape on back for print

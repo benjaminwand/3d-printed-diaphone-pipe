@@ -7,10 +7,10 @@ tube_diam = 11;     // air suppy tube, doesn't matter if you use your mouth
 rubber_thick = 1;   // generator rubber
 
 // proportions
-height = pipe_diam * 0.5;
 min_wall = 1.2 + pipe_diam * 0.005;
 inner_diam = pipe_diam * 0.7;
 stuck_width = pipe_diam * 0.15 + 3;
+height = pipe_diam * 0.5 + stuck_width*2 + 2*min_wall;
 vib_help = pipe_diam * 0.01;            // vibration
 screw_place = 
     [(pipe_diam/2 + min_wall+1.6)/sqrt(2), height/2 + (pipe_diam/2 + min_wall+1.6)/sqrt(2)];
